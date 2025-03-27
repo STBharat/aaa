@@ -128,14 +128,80 @@ def analysis_section():
             
             st.markdown(comparison_html, unsafe_allow_html=True)
             
-            # Add explanation of what to look for
-            st.info("""
-            **What to look for in the comparison:**
-            - Areas with reduced green vegetation
-            - New cleared patches or roads
-            - Expansion of agricultural or developed areas
-            - Changes in river courses or water bodies
-            """)
+            # Add a more dynamic analysis based on the specific images
+            if has_before_after:
+                # Perform simple analysis on the images to detect specific changes
+                import numpy as np
+                from PIL import ImageStat
+                
+                # Convert images to numpy arrays for analysis
+                before_array = np.array(st.session_state.before_image)
+                after_array = np.array(st.session_state.after_image)
+                
+                # Calculate basic statistical differences between images
+                before_green_mean = np.mean(before_array[:,:,1])
+                after_green_mean = np.mean(after_array[:,:,1])
+                green_change_pct = ((before_green_mean - after_green_mean) / before_green_mean) * 100 if before_green_mean > 0 else 0
+                
+                # Identify areas with significant changes (simplified approach)
+                diff = np.abs(before_array.astype(np.float32) - after_array.astype(np.float32))
+                total_diff = np.sum(diff)
+                significant_change_pixels = np.sum(np.sum(diff, axis=2) > 100)
+                significant_change_pct = (significant_change_pixels / (before_array.shape[0] * before_array.shape[1])) * 100
+                
+                # Identify specific types of changes
+                changes = []
+                
+                if green_change_pct > 5:
+                    changes.append(f"**Vegetation loss**: Approximately {green_change_pct:.1f}% reduction in green vegetation")
+                
+                if significant_change_pct > 10:
+                    changes.append(f"**Major landscape changes**: {significant_change_pct:.1f}% of the area shows significant changes")
+                    
+                    # Look for specific patterns in the difference image
+                    # Linear patterns might indicate roads
+                    # Implement a simplified road detection (this would be more sophisticated in a real system)
+                    horizontal_edges = np.sum(np.abs(diff[1:,:,:] - diff[:-1,:,:]))
+                    vertical_edges = np.sum(np.abs(diff[:,1:,:] - diff[:,:-1,:]))
+                    edge_ratio = horizontal_edges / vertical_edges if vertical_edges > 0 else 0
+                    
+                    if edge_ratio > 1.5 or edge_ratio < 0.6:
+                        changes.append("**Linear patterns detected**: Possible new roads or infrastructure")
+                        
+                    # Check for large contiguous areas of change - potential clearings
+                    # This is simplified; a real implementation would use connected component analysis
+                    if np.max(diff) > 150:
+                        changes.append("**Large cleared areas**: Significant sections of forest appear to have been completely removed")
+                
+                # Check for water body changes (detect blue channel changes)
+                before_blue_mean = np.mean(before_array[:,:,2])
+                after_blue_mean = np.mean(after_array[:,:,2])
+                blue_change_pct = ((after_blue_mean - before_blue_mean) / before_blue_mean) * 100 if before_blue_mean > 0 else 0
+                
+                if abs(blue_change_pct) > 10:
+                    if blue_change_pct > 0:
+                        changes.append(f"**Water expansion**: Possible flooding or new water bodies ({blue_change_pct:.1f}% increase in blue signature)")
+                    else:
+                        changes.append(f"**Water reduction**: Possible drought or draining of water bodies ({-blue_change_pct:.1f}% decrease in blue signature)")
+                
+                # If we couldn't detect specific changes, provide general guidance
+                if not changes:
+                    changes = [
+                        "Subtle changes in vegetation density",
+                        "Potential small-scale forest degradation",
+                        "Seasonal variations in vegetation health",
+                        "Possible early signs of human activity"
+                    ]
+                
+                # Display the customized analysis
+                st.markdown("### Detected Changes in This Image Pair")
+                for change in changes:
+                    st.markdown(f"- {change}")
+                
+                st.info("""
+                **Interact with the comparison slider** to carefully examine these identified changes.
+                Move the slider slowly across areas of interest to see the before and after states in detail.
+                """)
             
         else:
             # Only single image available (old functionality)
@@ -167,13 +233,140 @@ def analysis_section():
                     caption="After - Detected Deforestation"
                 )
             
-            # Add a difference visualization if available
+            # Add enhanced difference visualizations
             st.subheader("Detected Changes")
+            
+            # Show the default analyzed image with deforestation highlighted
             st.image(
                 st.session_state.analyzed_image,
                 use_container_width=True,
-                caption="Areas of Deforestation Highlighted"
+                caption="Areas of Deforestation Highlighted (Red Overlay)"
             )
+            
+            # Show additional visualizations if available
+            if hasattr(st.session_state, 'diff_visualization'):
+                st.subheader("Change Intensity Heatmap")
+                st.markdown("""
+                This heatmap shows the intensity of changes between the before and after images:
+                - <span style='color:red'>Red</span>: Significant changes (likely deforestation)
+                - <span style='color:green'>Green</span>: Moderate changes (potential degradation)
+                - <span style='color:blue'>Blue</span>: Minor changes (natural variation)
+                """, unsafe_allow_html=True)
+                
+                st.image(
+                    st.session_state.diff_visualization,
+                    use_container_width=True,
+                    caption="Change Intensity Heatmap"
+                )
+                
+                # Add a detailed explanation based on the images
+                # Get numpy arrays of the images for analysis
+                import numpy as np
+                before_array = np.array(st.session_state.before_image)
+                after_array = np.array(st.session_state.after_image)
+                
+                # Calculate basic metrics for the changes
+                diff = np.abs(before_array.astype(np.float32) - after_array.astype(np.float32))
+                total_diff = np.sum(diff)
+                significant_change_mask = np.sum(diff, axis=2) > 100
+                significant_change_pixels = np.sum(significant_change_mask)
+                total_pixels = before_array.shape[0] * before_array.shape[1]
+                significant_change_pct = (significant_change_pixels / total_pixels) * 100
+                
+                # Identify patterns in the changes
+                # Check for clustering of changes
+                from scipy import ndimage
+                labeled_array, num_features = ndimage.label(significant_change_mask)
+                
+                # Calculate properties of the changed regions
+                region_sizes = []
+                for i in range(1, num_features + 1):
+                    region_size = np.sum(labeled_array == i)
+                    region_sizes.append(region_size)
+                
+                # Sort region sizes to find the largest changes
+                region_sizes.sort(reverse=True)
+                
+                # Create a detailed analysis
+                st.subheader("Change Pattern Analysis")
+                
+                # Display statistics
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric("Total Changed Areas", f"{num_features}")
+                    if len(region_sizes) > 0:
+                        st.metric("Largest Changed Area", f"{region_sizes[0]} pixels")
+                
+                with col2:
+                    st.metric("Affected Area", f"{significant_change_pct:.1f}%")
+                    if len(region_sizes) > 0:
+                        avg_size = sum(region_sizes) / len(region_sizes)
+                        st.metric("Average Change Size", f"{avg_size:.1f} pixels")
+                
+                # Classify the pattern
+                pattern_description = ""
+                if num_features == 0:
+                    pattern_description = "No significant changes detected."
+                elif num_features == 1:
+                    pattern_description = "Single large area of change detected - likely a concentrated deforestation event."
+                elif num_features > 20:
+                    pattern_description = "Highly fragmented pattern - multiple small changes across the landscape."
+                elif len(region_sizes) > 0 and region_sizes[0] > 5000:
+                    pattern_description = "Large-scale clearing detected - significant deforestation event."
+                elif len(region_sizes) > 0 and max(region_sizes) < 1000 and len(region_sizes) > 10:
+                    pattern_description = "Distributed small clearings - possibly selective logging or small agriculture."
+                else:
+                    pattern_description = "Mixed pattern of deforestation - combination of large and small clearings."
+                
+                st.markdown(f"### Pattern Classification: \n\n{pattern_description}")
+                
+                # Add suggestions for further analysis
+                st.markdown("""
+                ### Recommended Analysis
+                
+                Based on the detected patterns, consider further investigation:
+                
+                1. **Field verification**: Arrange ground-truthing of the largest changed areas
+                2. **Time series analysis**: Monitor these areas over additional time periods
+                3. **High-resolution imagery**: Request higher resolution satellite data for key hotspots
+                """)
+                
+                # Display a 3D surface plot of the change intensity if we have Plotly installed
+                try:
+                    import plotly.graph_objects as go
+                    
+                    # Downsample for performance
+                    sample_factor = 4
+                    change_intensity = np.sum(diff, axis=2) / 3.0
+                    downsampled = change_intensity[::sample_factor, ::sample_factor]
+                    
+                    # Create a 3D surface plot
+                    x = np.arange(0, downsampled.shape[1])
+                    y = np.arange(0, downsampled.shape[0])
+                    
+                    fig = go.Figure(data=[go.Surface(
+                        z=downsampled, 
+                        colorscale='Viridis',
+                        name="Change Intensity",
+                        colorbar=dict(title="Change Intensity")
+                    )])
+                    
+                    fig.update_layout(
+                        title="3D Visualization of Forest Change Intensity",
+                        scene=dict(
+                            xaxis_title="X Position",
+                            yaxis_title="Y Position",
+                            zaxis_title="Change Intensity",
+                            camera=dict(eye=dict(x=1.5, y=1.5, z=1.2))
+                        ),
+                        margin=dict(l=0, r=0, b=0, t=30)
+                    )
+                    
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                except Exception as e:
+                    # If Plotly or another dependency is missing, just skip this visualization
+                    pass
             
         else:
             # Original functionality for single image

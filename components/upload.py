@@ -211,9 +211,72 @@ def upload_section():
                         st.session_state.after_analyzed = after_analyzed
                         st.session_state.deforested_areas = deforested_areas
                         
+                        # Generate a difference visualization to highlight changes
+                        try:
+                            # Convert images to numpy arrays
+                            import numpy as np
+                            before_array = np.array(st.session_state.before_image)
+                            after_array = np.array(st.session_state.after_image)
+                            
+                            # Create a difference image (absolute difference between before and after)
+                            diff = np.abs(before_array.astype(np.float32) - after_array.astype(np.float32))
+                            
+                            # Scale the differences for better visibility
+                            diff_normalized = np.clip(diff * 2, 0, 255).astype(np.uint8)
+                            
+                            # Create a heatmap-style visualization where red indicates significant changes
+                            diff_heatmap = np.zeros_like(before_array)
+                            
+                            # Blue channel for minimal changes, green for moderate, red for significant
+                            change_intensity = np.sum(diff, axis=2) / 3.0
+                            
+                            # Set blue channel (minimal changes)
+                            diff_heatmap[:,:,2] = np.where(change_intensity < 30, change_intensity * 8, 0).astype(np.uint8)
+                            
+                            # Set green channel (moderate changes)
+                            diff_heatmap[:,:,1] = np.where((change_intensity >= 30) & (change_intensity < 80), 
+                                                          (change_intensity - 30) * 5, 0).astype(np.uint8)
+                            
+                            # Set red channel (significant changes - likely deforestation)
+                            diff_heatmap[:,:,0] = np.where(change_intensity >= 80, 
+                                                          (change_intensity - 80) * 3, 0).astype(np.uint8)
+                            
+                            # Convert back to PIL Image
+                            from PIL import Image
+                            diff_image = Image.fromarray(diff_heatmap)
+                            
+                            # Store the difference visualization
+                            st.session_state.diff_visualization = diff_image
+                            
+                            # Create an overlay version that shows the original with changes highlighted
+                            overlay_weight = 0.7  # Weight for the original image
+                            highlight_weight = 0.3  # Weight for the highlights
+                            
+                            # Create a mask where significant changes occur
+                            significant_changes = (change_intensity > 50)
+                            
+                            # Start with the after image
+                            overlay = after_array.copy()
+                            
+                            # Add red highlight to areas with significant changes
+                            overlay[significant_changes, 0] = np.clip(overlay[significant_changes, 0] * overlay_weight + 
+                                                                    255 * highlight_weight, 0, 255).astype(np.uint8)
+                            overlay[significant_changes, 1] = np.clip(overlay[significant_changes, 1] * overlay_weight, 0, 255).astype(np.uint8)
+                            overlay[significant_changes, 2] = np.clip(overlay[significant_changes, 2] * overlay_weight, 0, 255).astype(np.uint8)
+                            
+                            # Convert to PIL Image
+                            overlay_image = Image.fromarray(overlay)
+                            st.session_state.change_overlay = overlay_image
+                            
+                            # Use the overlay image as the analyzed image
+                            st.session_state.analyzed_image = overlay_image
+                        except Exception as e:
+                            st.error(f"Error generating difference visualization: {str(e)}")
+                            # Fallback to the standard processed image
+                            st.session_state.analyzed_image = after_analyzed
+                        
                         # Set uploaded_image to after image for compatibility with other components
                         st.session_state.uploaded_image = st.session_state.after_image
-                        st.session_state.analyzed_image = after_analyzed
                         
                         # Mark analysis as complete
                         st.session_state.analysis_complete = True
