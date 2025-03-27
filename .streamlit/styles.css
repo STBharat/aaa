@@ -1,0 +1,742 @@
+/* Main theme colors and animations */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Animation keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInFromLeft {
+    from { transform: translateX(-30px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInFromRight {
+    from { transform: translateX(30px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInFromTop {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 0 rgba(46, 125, 50, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(46, 125, 50, 0.8); }
+    100% { box-shadow: 0 0 0 rgba(46, 125, 50, 0.5); }
+}
+
+/* General styling */
+html, body, [class*="css"] {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Main header styling */
+.main-header {
+    animation: slideInFromTop 1s ease-out;
+}
+
+.main-header h1 {
+    font-weight: 700;
+    color: #2e7d32;
+    letter-spacing: -0.5px;
+}
+
+/* Card styling */
+.metric-card {
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 1s ease-out;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Dashboard sections */
+.dashboard-section {
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Alert styling */
+.alert-high {
+    background-color: #ffebee;
+    border-left: 5px solid #c62828;
+    animation: pulse 2s infinite;
+}
+
+.alert-medium {
+    background-color: #fff8e1;
+    border-left: 5px solid #ff8f00;
+}
+
+.alert-low {
+    background-color: #e8f5e9;
+    border-left: 5px solid #2e7d32;
+}
+
+/* Button styling */
+.stButton > button {
+    border-radius: 30px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode buttons */
+.dark .stButton > button, 
+.dark [data-testid="baseButton-secondary"],
+.dark [data-baseweb="button"],
+.dark button[kind="formSubmit"] {
+    color: white !important;
+    border-color: #4caf50 !important;
+    background-color: #2e7d32 !important;
+}
+
+.dark .stButton > button:hover {
+    background-color: #388e3c !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Form submit buttons */
+[kind="formSubmit"] {
+    border-radius: 30px !important;
+    transition: all 0.3s ease !important;
+}
+
+.dark [kind="formSubmit"] {
+    color: white !important;
+    background-color: #2e7d32 !important;
+}
+
+/* Primary button animation */
+.stButton > button[data-baseweb="button"] {
+    animation: fadeIn 1s ease-out;
+}
+
+/* Maps animation */
+[data-testid="stIframe"] {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1.2s ease-out;
+    transition: box-shadow 0.3s ease;
+}
+
+[data-testid="stIframe"]:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Chart animations */
+[data-testid="stPlotlyChart"] > div {
+    animation: fadeIn 1s ease-out;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+[data-testid="stPlotlyChart"] > div:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Upload area styling */
+[data-testid="stFileUploader"] {
+    border-radius: 10px;
+    border: 2px dashed #2e7d32;
+    padding: 20px;
+    transition: all 0.3s ease;
+    animation: fadeIn 1s ease-out;
+}
+
+[data-testid="stFileUploader"]:hover {
+    border-color: #1b5e20;
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+/* Sidebar animation and enhanced styling */
+[data-testid="stSidebar"] {
+    animation: slideInFromLeft 0.5s ease-out;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), 
+                      url('https://i.imgur.com/8yYlcAI.png');
+    background-size: cover;
+    background-position: center;
+    padding: 2rem 1.5rem;
+}
+
+/* Sidebar header styling */
+[data-testid="stSidebar"] h1, 
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    color: #2e7d32 !important;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+[data-testid="stSidebar"] h1::after,
+[data-testid="stSidebar"] h2::after,
+[data-testid="stSidebar"] h3::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40%;
+    height: 3px;
+    background: linear-gradient(90deg, #4caf50, transparent);
+}
+
+/* Sidebar navigation item styling */
+[data-testid="stSidebar"] [role="radiogroup"] label {
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    padding: 0.85rem 1rem;
+    transition: all 0.2s ease;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-left: 3px solid transparent;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+}
+
+[data-testid="stSidebar"] [role="radiogroup"] label:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+    border-left: 3px solid #4caf50;
+    transform: translateX(3px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+/* Active navigation item */
+[data-testid="stSidebar"] [role="radiogroup"] label[data-baseweb="radio"] [aria-checked="true"] {
+    font-weight: 600;
+}
+
+[data-testid="stSidebar"] [role="radiogroup"] label[data-baseweb="radio"] [aria-checked="true"] + div {
+    background-color: rgba(76, 175, 80, 0.15);
+    border-left: 3px solid #2e7d32;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+/* Navigation icons and text alignment */
+[data-testid="stSidebar"] [role="radiogroup"] label div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Navigation text style */
+[data-testid="stSidebar"] [role="radiogroup"] label span p {
+    margin: 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+}
+
+/* Sidebar info styling */
+[data-testid="stSidebar"] [data-testid="stInfo"] {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-left: 4px solid #4caf50;
+    margin: 1rem 0;
+    padding: 0.75rem;
+}
+
+/* Professional sidebar divider */
+[data-testid="stSidebar"] hr {
+    margin: 1.5rem 0;
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, #4caf50, rgba(76, 175, 80, 0.1), transparent);
+    opacity: 0.8;
+}
+
+/* Enhanced sidebar headers */
+[data-testid="stSidebar"] h1, 
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    position: relative;
+    margin-bottom: 1.25rem;
+    color: #2e7d32 !important;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* Professional header underline effect */
+[data-testid="stSidebar"] h3::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: #4caf50;
+    border-radius: 3px;
+}
+
+/* Emoji icon styling in sidebar */
+[data-testid="stSidebar"] h1:first-child, 
+[data-testid="stSidebar"] h2:first-child,
+[data-testid="stSidebar"] h3:first-child {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Call to action element */
+.cta-element {
+    animation: glow 3s infinite;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.cta-element:hover {
+    transform: translateY(-5px);
+}
+
+/* Dataframe styling */
+[data-testid="stDataFrame"] {
+    animation: fadeIn 1s ease-out;
+}
+
+[data-testid="stTable"] {
+    animation: fadeIn 1s ease-out;
+}
+
+/* Tab styling */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 10px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 4px 4px 0px 0px;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    background-color: rgba(46, 125, 50, 0.1);
+}
+
+.stTabs [data-baseweb="tab-highlight"] {
+    background-color: #2e7d32;
+    border-radius: 3px 3px 0px 0px;
+}
+
+/* Text input fields */
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.stTextInput > div > div > input:focus,
+.stTextArea > div > div > textarea:focus {
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.5);
+    border-color: #2e7d32;
+}
+
+/* Select box styling */
+.stSelectbox > div > div,
+.stMultiSelect > div > div {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Tooltip styling */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Dark mode adjustments */
+.dark .dashboard-section {
+    background-color: rgba(30, 30, 30, 0.6);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.dark [data-testid="stFileUploader"] {
+    border-color: #4caf50;
+}
+
+.dark [data-testid="stFileUploader"]:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+/* Comprehensive dark mode improvements */
+/* Basic text and backgrounds */
+.dark .main, 
+.dark .stApp, 
+.dark [data-testid="stAppViewContainer"],
+.dark [data-testid="stHeader"],
+.dark [data-testid="stToolbar"],
+.dark [data-testid="stDecoration"],
+.dark [data-testid="baseButton-headerNoPadding"] {
+    background-color: #0e1117 !important;
+    color: white !important;
+}
+
+/* Sidebar specific fixes for dark mode */
+.dark [data-testid="stSidebar"] {
+    background-color: #1e1e1e !important;
+    color: white !important;
+    background-image: linear-gradient(rgba(30, 30, 30, 0.92), rgba(30, 30, 30, 0.92)), 
+                      url('https://i.imgur.com/8yYlcAI.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    border-right: 1px solid #333333 !important;
+}
+
+/* Dark mode sidebar headers */
+.dark [data-testid="stSidebar"] h1::after,
+.dark [data-testid="stSidebar"] h2::after,
+.dark [data-testid="stSidebar"] h3::after {
+    background-color: #4caf50 !important;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.dark [data-testid="stSidebar"] h1,
+.dark [data-testid="stSidebar"] h2,
+.dark [data-testid="stSidebar"] h3 {
+    color: #4caf50 !important;
+}
+
+/* Dark mode sidebar dividers */
+.dark [data-testid="stSidebar"] hr {
+    background: linear-gradient(90deg, #4caf50, rgba(76, 175, 80, 0.1), rgba(30, 30, 30, 0)) !important;
+    opacity: 0.7 !important;
+}
+
+/* Dark mode sidebar navigation items */
+.dark [data-testid="stSidebar"] [role="radiogroup"] label {
+    background-color: rgba(40, 40, 40, 0.7) !important;
+    margin-bottom: 0.5rem !important;
+    border-radius: 8px !important;
+    border-left: 3px solid transparent !important;
+}
+
+.dark [data-testid="stSidebar"] [role="radiogroup"] label:hover {
+    background-color: rgba(76, 175, 80, 0.15) !important;
+    border-left: 3px solid #4caf50 !important;
+}
+
+/* Dark mode sidebar info boxes */
+.dark [data-testid="stSidebar"] [data-testid="stInfo"] {
+    background-color: rgba(40, 40, 40, 0.7) !important;
+    border-left: 4px solid #4caf50 !important;
+    color: white !important;
+}
+
+.dark [data-testid="stSidebar"] h1,
+.dark [data-testid="stSidebar"] h2,
+.dark [data-testid="stSidebar"] h3,
+.dark [data-testid="stSidebar"] h4,
+.dark [data-testid="stSidebar"] h5,
+.dark [data-testid="stSidebar"] h6,
+.dark [data-testid="stSidebar"] p,
+.dark [data-testid="stSidebar"] span,
+.dark [data-testid="stSidebar"] label,
+.dark [data-testid="stSidebar"] div {
+    color: white !important;
+}
+
+/* Sidebar radio buttons */
+.dark [data-testid="stSidebar"] [role="radiogroup"] label span p {
+    color: white !important;
+}
+
+/* Main Header and other headers */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, 
+.dark .main-header h1, .dark .main-header p, 
+.dark p, .dark span, .dark label, 
+.dark .stMarkdown, .dark .element-container {
+    color: white !important;
+}
+
+/* Dark mode text inputs */
+.dark .stTextInput > div > div > input,
+.dark .stTextArea > div > div > textarea,
+.dark .stNumberInput > div > div > input {
+    color: white !important;
+    background-color: #1f2229 !important;
+    border-color: #4b4b4b !important;
+}
+
+/* Dark mode select boxes */
+.dark .stSelectbox > div > div > div,
+.dark .stMultiselect > div > div > div {
+    color: white !important;
+    background-color: #1f2229 !important;
+    border-color: #4b4b4b !important;
+}
+
+/* Dark mode dropdowns */
+.dark .stSelectbox > div[data-baseweb="select"] > div {
+    background-color: #1f2229 !important;
+    color: white !important;
+}
+
+/* Dark mode tables */
+.dark [data-testid="stTable"] {
+    color: white !important;
+}
+
+.dark [data-testid="stTable"] th {
+    background-color: #262730 !important;
+    color: white !important;
+    border-color: #4b4b4b !important;
+}
+
+.dark [data-testid="stTable"] td {
+    border-color: #4b4b4b !important;
+    color: white !important;
+}
+
+/* Fix dark mode plotly charts */
+.dark [data-testid="stPlotlyChart"] {
+    background-color: transparent !important;
+}
+
+/* Dark mode metric values */
+.dark [data-testid="stMetricValue"] {
+    color: white !important;
+}
+
+/* Dark mode radio buttons */
+.dark [role="radiogroup"] label {
+    color: white !important;
+}
+
+/* Small text elements like captions */
+.dark .stCaption, .dark small, .dark .small, .dark caption {
+    color: #cccccc !important;
+}
+
+/* Tooltips in dark mode */
+.dark .stTooltipIcon, .dark .stTooltipLabel {
+    color: #cccccc !important;
+}
+
+/* Expand/Collapse sections in dark mode */
+.dark .streamlit-expanderHeader {
+    color: white !important;
+    background-color: #1f2229 !important;
+}
+
+.dark [data-testid="stExpander"] {
+    border-color: #4caf50 !important;
+    background-color: #1f2229 !important;
+}
+
+.dark [data-testid="stExpander"] .streamlit-expanderContent {
+    background-color: #1f2229 !important;
+    color: white !important;
+}
+
+/* Dark mode form fields */
+.dark [data-testid="stForm"] {
+    background-color: #1e1e1e !important;
+    border-color: #4caf50 !important;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.dark [data-testid="stMarkdownContainer"] a {
+    color: #81c784 !important;
+    font-weight: 500;
+}
+
+.dark [data-testid="stMarkdownContainer"] a:hover {
+    color: #a5d6a7 !important;
+    text-decoration: underline;
+}
+
+/* Info/Warning/Error boxes */
+.dark .stAlert {
+    background-color: #1f2229 !important;
+    color: white !important;
+}
+
+.dark .stAlert > div > p {
+    color: white !important;
+}
+
+/* Radio button icons */
+.dark [role="radiogroup"] svg, 
+.dark [data-testid="stWidgetLabel"] > p {
+    color: white !important;
+}
+
+/* Streamlit extra components */
+.dark .colored-header {
+    color: white !important;
+}
+
+.dark .colored-header-description {
+    color: #cccccc !important;
+}
+
+/* Tabs */
+.dark .stTabs [data-baseweb="tab-list"] {
+    background-color: #1e1e1e !important;
+}
+
+.dark .stTabs [data-baseweb="tab"] {
+    color: white !important;
+}
+
+.dark .stTabs [data-baseweb="tab-highlight"] {
+    background-color: #4caf50 !important;
+}
+
+/* Download links and buttons */
+.dark a:not([style]) {
+    color: #4caf50 !important;
+}
+
+/* Progress bar animation */
+.stProgress > div > div > div > div {
+    transition: all 0.5s ease-out;
+}
+
+/* Dark mode progress bars */
+.dark .stProgress > div {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .stProgress > div > div > div > div {
+    background: linear-gradient(to right, #388e3c, #4caf50) !important;
+}
+
+/* Alert section animation */
+.alert-section {
+    animation: slideInFromLeft 0.8s ease-out;
+}
+
+/* Map controls animation */
+.map-controls {
+    animation: slideInFromRight 0.8s ease-out;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid rgba(76, 175, 80, 0.3);
+    border-top-color: #4caf50;
+    animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+}
+
+/* Status labels */
+.status-label {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-success {
+    background-color: #c8e6c9;
+    color: #2e7d32;
+}
+
+.status-warning {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+.status-danger {
+    background-color: #ffcdd2;
+    color: #c62828;
+}
+
+/* Dark mode status labels */
+.dark .status-success {
+    background-color: rgba(200, 230, 201, 0.2);
+    color: #a5d6a7;
+}
+
+.dark .status-warning {
+    background-color: rgba(255, 248, 225, 0.2);
+    color: #ffe082;
+}
+
+.dark .status-danger {
+    background-color: rgba(255, 205, 210, 0.2);
+    color: #ef9a9a;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-section {
+        padding: 10px;
+    }
+    
+    .metric-card {
+        padding: 15px;
+    }
+}
+
+/* Custom styling for format boxes in upload component - dark mode compatible */
+body.dark div[style*="background-color: rgba(76, 175, 80, 0.1)"] {
+    background-color: rgba(76, 175, 80, 0.15) !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
+}
+
+body.dark span[style*="background-color: rgba(76, 175, 80, 0.2)"] {
+    background-color: rgba(76, 175, 80, 0.3) !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark h4[style*="color: #2e7d32"] {
+    color: #4caf50 !important;
+}
+
+body.dark p {
+    color: #e0e0e0 !important;
+}

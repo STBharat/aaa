@@ -1,0 +1,182 @@
+<p style="
+    color: #1b5e20;
+    font-size: 1.15rem;
+    margin: 15px auto 30px auto;
+    max-width: 800px;
+    line-height: 1.6;
+">
+    Forests are disappearing at a rate of <span style="color: #2e7d32; font-weight: 600;">26 million acres per year</span>. 
+    Your actions today can help protect the lungs of our planet and preserve biodiversity for future generations.
+</p>
+
+<div style="
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+">
+    <div style="
+        background-color: rgba(46,125,50,0.08);
+        border-radius: 50px;
+        padding: 12px 20px;
+        color: #1b5e20;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    ">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="#2e7d32">
+            <path d="M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M15.1,7.07C15.24,7.07 15.38,7.12 15.5,7.23L16.77,8.5C17,8.72 17,9.07 16.77,9.28L15.77,10.28L13.72,8.23L14.72,7.23C14.82,7.12 14.96,7.07 15.1,7.07M13.13,8.81L15.19,10.87L9.13,16.93H7.07V14.87L13.13,8.81Z" />
+        </svg>
+        <span>3 key ways to contribute</span>
+    </div>
+    <div style="
+        background-color: rgba(46,125,50,0.08);
+        border-radius: 50px;
+        padding: 12px 20px;
+        color: #1b5e20;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    ">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="#2e7d32">
+            <path d="M16.53,11.06L15.47,10L10.59,14.88L8.47,12.76L7.41,13.82L10.59,17L16.53,11.06M12,2C8.14,2 5,5.14 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9C19,5.14 15.86,2 12,2M12,4C14.76,4 17,6.24 17,9C17,11.88 14.12,16.19 12,18.88C9.92,16.21 7,11.85 7,9C7,6.24 9.24,4 12,4Z" />
+        </svg>
+        <span>Track impact globally</span>
+    </div>
+</div>
+
+Ways You Can Make a Difference
+:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.25); transition: all 0.3s ease; }
+
+">
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="#4caf50">
+    <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,10.5A1.5,1.5 0 0,1 13.5,12A1.5,1.5 0 0,1 12,13.5A1.5,1.5 0 0,1 10.5,12A1.5,1.5 0 0,1 12,10.5M7.5,12A1.5,1.5 0 0,1 9,13.5A1.5,1.5 0 0,1 7.5,15A1.5,1.5 0 0,1 6,13.5A1.5,1.5 0 0,1 7.5,12M16.5,12A1.5,1.5 0 0,1 18,13.5A1.5,1.5 0 0,1 16.5,15A1.5,1.5 0 0,1 15,13.5A1.5,1.5 0 0,1 16.5,12Z" />
+</svg>
+
+    </div>
+    <div>
+        <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Reduce Your Impact</h3>
+        <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Simple daily actions to help forests</p>
+    </div>
+</div>
+<div style="margin-top: 15px; color: #2e7d32;">
+
+<ul style="padding-left: 20px; margin-top: 0;">
+    <li style="margin-bottom: 8px;">Choose recycled or FSC-certified paper products</li>
+    <li style="margin-bottom: 8px;">Reduce meat consumption, especially beef</li>
+    <li style="margin-bottom: 8px;">Use digital documents instead of printing</li>
+    <li style="margin-bottom: 8px;">Support sustainable palm oil products</li>
+    <li>Buy furniture from sustainable sources</li>
+</ul>
+
+</div>
+<div style="
+    margin-top: 20px;
+    background-color: rgba(46,125,50,0.08);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #2e7d32;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+">
+    <div style="background-color: #2e7d32; 
+              width: 12px; 
+              height: 12px; 
+              border-radius: 50%; 
+              margin-right: 10px;
+              box-shadow: 0 0 8px rgba(46,125,50,0.4);"></div>
+    <span>2.5 tons of CO₂ saved annually by simple individual actions</span>
+</div>
+
+:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.25); transition: all 0.3s ease; }
+
+">
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="#2e7d32">
+    <path d="M21,10.5H20V8H17V10.5H16.5V7H14V10.5H13.5V5H11V10.5H10.5V8H7.5V10.5H7V7H4V10.5H3A1,1 0 0,0 2,11.5V13.5A1,1 0 0,0 3,14.5H21A1,1 0 0,0 22,13.5V11.5A1,1 0 0,0 21,10.5M4.5,18.5H19.5V20H4.5V18.5Z" />
+</svg>
+
+    </div>
+    <div>
+        <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Support Organizations</h3>
+        <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Conservation groups fighting deforestation</p>
+    </div>
+</div>
+<div style="margin-top: 15px; color: #2e7d32;">
+
+<ul style="padding-left: 20px; margin-top: 0;">
+    <li style="margin-bottom: 8px;"><a href="https://www.rainforest-alliance.org/" target="_blank" style="color: inherit;">Rainforest Alliance</a></li>
+    <li style="margin-bottom: 8px;"><a href="https://www.worldwildlife.org/" target="_blank" style="color: inherit;">World Wildlife Fund</a></li>
+    <li style="margin-bottom: 8px;"><a href="https://www.conservation.org/" target="_blank" style="color: inherit;">Conservation International</a></li>
+    <li style="margin-bottom: 8px;"><a href="https://www.nature.org/" target="_blank" style="color: inherit;">The Nature Conservancy</a></li>
+    <li><a href="https://www.amazonteam.org/" target="_blank" style="color: inherit;">Amazon Conservation Team</a></li>
+</ul>
+
+</div>
+<div style="
+    margin-top: 20px;
+    background-color: rgba(46,125,50,0.08);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #2e7d32;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+">
+    <div style="background-color: #2e7d32; 
+              width: 12px; 
+              height: 12px; 
+              border-radius: 50%; 
+              margin-right: 10px;
+              box-shadow: 0 0 8px rgba(46,125,50,0.4);"></div>
+    <span>Over 150M acres protected through conservation partnerships</span>
+</div>
+
+:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.25); transition: all 0.3s ease; }
+
+">
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="#689f38">
+    <path d="M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z" />
+</svg>
+
+    </div>
+    <div>
+        <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Get Involved</h3>
+        <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Direct action opportunities</p>
+    </div>
+</div>
+<div style="margin-top: 15px; color: #2e7d32;">
+
+<ul style="padding-left: 20px; margin-top: 0;">
+    <li style="margin-bottom: 8px;">Participate in local tree planting events</li>
+    <li style="margin-bottom: 8px;">Volunteer with conservation organizations</li>
+    <li style="margin-bottom: 8px;">Support political actions for forest protection</li>
+    <li style="margin-bottom: 8px;">Start a community garden</li>
+    <li>Educate others about deforestation</li>
+</ul>
+
+</div>
+<div style="
+    margin-top: 20px;
+    background-color: rgba(46,125,50,0.08);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #2e7d32;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+">
+    <div style="background-color: #2e7d32; 
+              width: 12px; 
+              height: 12px; 
+              border-radius: 50%; 
+              margin-right: 10px;
+              box-shadow: 0 0 8px rgba(46,125,50,0.4);"></div>
+    <span>20B+ trees planted through global community initiatives</span>
+</div>
