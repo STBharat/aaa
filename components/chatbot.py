@@ -4,15 +4,99 @@ from PIL import Image
 import base64
 import io
 
-def chatbot_section():
-    """Display an interactive conservation chatbot assistant."""
+def show_chatbot_button():
+    """Display a floating chatbot button at the bottom right of the dashboard."""
     
-    # Create a header with green styling for the page
-    colored_header(
-        label="Conservation Chatbot Assistant",
-        description="Get answers to your deforestation and conservation questions",
-        color_name="green-70",
-    )
+    # Create a chat button
+    chat_icon = """
+    <div 
+        onclick="this.style.display='none'; document.getElementById('chatbot-container').style.display='block';"
+        style="
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #4caf50;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 100;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+        "
+        onmouseover="this.style.transform='scale(1.1)'"
+        onmouseout="this.style.transform='scale(1)'"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="white">
+            <path d="M12.6 2.86c.23-.01.45 0 .66.03a6.45 6.45 0 0 1 5.2 5.46c.13.82.1 1.65-.1 2.45l.04.03c1.1.15 2.2.64 3.1 1.5l-1.5 1.5c-1-1-2.3-1.5-3.5-1.5s-2.5.5-3.5 1.5l-1.42-1.44c.34-.39.5-.82.5-1.36 0-.56-.16-1.11-.5-1.6-.33-.47-.8-.86-1.4-1.1l-.2-.07c-.14-.04-.29-.04-.44-.04-.3 0-.56.1-.8.31-.24.2-.38.47-.4.77-.04.5.22.93.64 1.22l-.14.14c-1.1.84-2 1.9-2.7 3.12V7.5c0-.83.67-1.5 1.5-1.5h2.02c-.2-.42-.32-.88-.32-1.36 0-.83.35-1.62.9-2.18.56-.54 1.32-.9 2.16-.9Z"/>
+            <path d="m7.88 15.93 2.12 2.12c-1 1-2.3 1.5-3.5 1.5s-2.5-.5-3.5-1.5L4.5 16.5a3.5 3.5 0 0 1 3.38-.57ZM13 15.5c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v8H13v-8Z"/>
+            <path d="M9 18.5c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v5H9v-5Z M3 23.5v-2c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v2H3Z"/>
+        </svg>
+    </div>
+    """
+    
+    # Create a container for the chat interface (initially hidden)
+    chat_container = """
+    <div id="chatbot-container" style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 350px;
+        height: 450px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        z-index: 101;
+        display: none;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+    ">
+        <div style="
+            padding: 15px;
+            background-color: #4caf50;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        ">
+            <span>ForestWatch Conservation Assistant</span>
+            <div onclick="document.getElementById('chatbot-container').style.display='none';" style="
+                cursor: pointer;
+                font-size: 20px;
+                font-weight: bold;
+            ">×</div>
+        </div>
+        <iframe src="/Conservation_Chatbot" style="width: 100%; height: calc(100% - 50px); border: none;"></iframe>
+    </div>
+    """
+    
+    # Display the chat button and container
+    st.markdown(chat_icon + chat_container, unsafe_allow_html=True)
+
+def chatbot_section(as_dialog=False):
+    """
+    Display an interactive conservation chatbot assistant.
+    
+    Parameters:
+    -----------
+    as_dialog : bool
+        If True, display as a compact dialog for embedding elsewhere.
+        If False, display as a full page with header and descriptions.
+    """
+    
+    # Create a header only if not in dialog mode
+    if not as_dialog:
+        colored_header(
+            label="Conservation Chatbot Assistant",
+            description="Get answers to your deforestation and conservation questions",
+            color_name="green-70",
+        )
     
     # Initialize session state for chat history if it doesn't exist
     if 'chat_history' not in st.session_state:
@@ -20,19 +104,33 @@ def chatbot_section():
             {"role": "assistant", "content": "Hello! I'm ForestWatch's Conservation Assistant. I can answer questions about deforestation, conservation efforts, and how you can help protect our forests. What would you like to know today?"}
         ]
     
-    # Create a container with nice styling for the chat interface
-    st.markdown("""
-    <div style="
-        color: #1b5e20;
-        font-size: 1.15rem;
-        margin: 15px auto 30px auto;
-        max-width: 800px;
-        line-height: 1.6;
-        text-align: center;
-    ">
-        Ask me anything about forests, deforestation, conservation methods, or how you can contribute to protecting our planet's valuable ecosystems.
-    </div>
-    """, unsafe_allow_html=True)
+    # Create a container with nice styling for the chat interface (smaller for dialog mode)
+    if not as_dialog:
+        st.markdown("""
+        <div style="
+            color: #1b5e20;
+            font-size: 1.15rem;
+            margin: 15px auto 30px auto;
+            max-width: 800px;
+            line-height: 1.6;
+            text-align: center;
+        ">
+            Ask me anything about forests, deforestation, conservation methods, or how you can contribute to protecting our planet's valuable ecosystems.
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div style="
+            color: #1b5e20;
+            font-size: 0.95rem;
+            margin: 5px auto 15px auto;
+            max-width: 100%;
+            line-height: 1.4;
+            text-align: center;
+        ">
+            Ask me about forests & conservation
+        </div>
+        """, unsafe_allow_html=True)
     
     # Create the chat interface
     chat_container = st.container()
@@ -119,88 +217,89 @@ def chatbot_section():
         # Rerun to display the updated chat
         st.rerun()
     
-    # Display informational cards below the chat interface
-    st.markdown("## Helpful Resources")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
+    # Display informational cards below the chat interface - only in full page mode
+    if not as_dialog:
+        st.markdown("## Helpful Resources")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            <div style="
+                background-color: #f1f8e9; 
+                border-radius: 12px; 
+                border-left: 5px solid #43a047;
+                padding: 20px 25px; 
+                box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+                margin-bottom: 20px;
+            ">
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <div style="margin-right: 15px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="#4caf50">
+                            <path d="M12,3C7,3 3,7 3,12C3,17 7,21 12,21C17,21 21,17 21,12C21,7 17,3 12,3M12,19C8.1,19 5,15.9 5,12C5,8.1 8.1,5 12,5C15.9,5 19,8.1 19,12C19,15.9 15.9,19 12,19M11,7H13V13H11V7M11,15H13V17H11V15Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Forest Facts</h3>
+                        <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Key information about global forests</p>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; color: #2e7d32;">
+                    <ul style="padding-left: 20px; margin-top: 0;">
+                        <li style="margin-bottom: 8px;">Forests cover about 31% of the world's land surface</li>
+                        <li style="margin-bottom: 8px;">Over 1.6 billion people rely on forests for their livelihoods</li>
+                        <li style="margin-bottom: 8px;">Forests are home to 80% of terrestrial biodiversity</li>
+                        <li style="margin-bottom: 8px;">We lose approximately 4.7 million hectares of forest annually</li>
+                    </ul>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown("""
+            <div style="
+                background-color: #e8f5e9; 
+                border-radius: 12px; 
+                border-left: 5px solid #2e7d32;
+                padding: 20px 25px; 
+                box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+                margin-bottom: 20px;
+            ">
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <div style="margin-right: 15px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="#2e7d32">
+                            <path d="M17,4V10L15,8L13,10V4H9V20H11V12L13,10L15,12V20H17V4H21V20H23V4C23,2.89 22.1,2 21,2H8C6.89,2 6,2.89 6,4V12H4V20H6V22H8V20H12V22H14V20H18V22H20V20H23V22H19V20Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Common Questions</h3>
+                        <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Topics our chatbot can help with</p>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; color: #2e7d32;">
+                    <ul style="padding-left: 20px; margin-top: 0;">
+                        <li style="margin-bottom: 8px;">What are the main causes of deforestation?</li>
+                        <li style="margin-bottom: 8px;">How does deforestation affect climate change?</li>
+                        <li style="margin-bottom: 8px;">What conservation efforts are most effective?</li>
+                        <li style="margin-bottom: 8px;">How can I personally help protect forests?</li>
+                    </ul>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Add a disclaimer at the bottom
         st.markdown("""
         <div style="
-            background-color: #f1f8e9; 
-            border-radius: 12px; 
-            border-left: 5px solid #43a047;
-            padding: 20px 25px; 
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            margin-bottom: 20px;
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px;
+            border-top: 1px solid #eee;
         ">
-            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                <div style="margin-right: 15px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="#4caf50">
-                        <path d="M12,3C7,3 3,7 3,12C3,17 7,21 12,21C17,21 21,17 21,12C21,7 17,3 12,3M12,19C8.1,19 5,15.9 5,12C5,8.1 8.1,5 12,5C15.9,5 19,8.1 19,12C19,15.9 15.9,19 12,19M11,7H13V13H11V7M11,15H13V17H11V15Z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Forest Facts</h3>
-                    <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Key information about global forests</p>
-                </div>
-            </div>
-            <div style="margin-top: 15px; color: #2e7d32;">
-                <ul style="padding-left: 20px; margin-top: 0;">
-                    <li style="margin-bottom: 8px;">Forests cover about 31% of the world's land surface</li>
-                    <li style="margin-bottom: 8px;">Over 1.6 billion people rely on forests for their livelihoods</li>
-                    <li style="margin-bottom: 8px;">Forests are home to 80% of terrestrial biodiversity</li>
-                    <li style="margin-bottom: 8px;">We lose approximately 4.7 million hectares of forest annually</li>
-                </ul>
-            </div>
+            <p>This conservation chatbot provides general information based on current scientific understanding and conservation best practices. For specific advice, please consult with environmental professionals or organizations.</p>
         </div>
         """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div style="
-            background-color: #e8f5e9; 
-            border-radius: 12px; 
-            border-left: 5px solid #2e7d32;
-            padding: 20px 25px; 
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            margin-bottom: 20px;
-        ">
-            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                <div style="margin-right: 15px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="#2e7d32">
-                        <path d="M17,4V10L15,8L13,10V4H9V20H11V12L13,10L15,12V20H17V4H21V20H23V4C23,2.89 22.1,2 21,2H8C6.89,2 6,2.89 6,4V12H4V20H6V22H8V20H12V22H14V20H18V22H20V20H23V22H19V20Z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Common Questions</h3>
-                    <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Topics our chatbot can help with</p>
-                </div>
-            </div>
-            <div style="margin-top: 15px; color: #2e7d32;">
-                <ul style="padding-left: 20px; margin-top: 0;">
-                    <li style="margin-bottom: 8px;">What are the main causes of deforestation?</li>
-                    <li style="margin-bottom: 8px;">How does deforestation affect climate change?</li>
-                    <li style="margin-bottom: 8px;">What conservation efforts are most effective?</li>
-                    <li style="margin-bottom: 8px;">How can I personally help protect forests?</li>
-                </ul>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Add a disclaimer at the bottom
-    st.markdown("""
-    <div style="
-        font-size: 0.8rem;
-        color: #666;
-        text-align: center;
-        margin-top: 30px;
-        padding: 10px;
-        border-top: 1px solid #eee;
-    ">
-        <p>This conservation chatbot provides general information based on current scientific understanding and conservation best practices. For specific advice, please consult with environmental professionals or organizations.</p>
-    </div>
-    """, unsafe_allow_html=True)
 
 def generate_response(user_input):
     """

@@ -642,6 +642,10 @@ if page == "Overview Dashboard":
     from components.header import create_header
     create_header(show_dashboard_elements=True)
     
+    # Add the floating chatbot button to the dashboard
+    from components.chatbot import show_chatbot_button
+    show_chatbot_button()
+    
     # Show brief stats in cards at the top
     col1, col2, col3 = st.columns(3)
     
@@ -821,6 +825,10 @@ elif page == "Conservation Chatbot":
     from components.header import create_header
     create_header(show_dashboard_elements=False)
     chatbot_section()
+
+# Special route for chatbot dialog - no navigation or header
+elif page == "Conservation_Chatbot":
+    chatbot_section(as_dialog=True)
 
 # Footer
 st.markdown("---")
