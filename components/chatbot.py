@@ -6,45 +6,282 @@ import io
 import random
 
 def show_chatbot_button():
-    """Display a floating chatbot button at the bottom right of the dashboard."""
+    """Display a floating chatbot button at the bottom right of the dashboard 
+    that opens an inline chat dialog rather than redirecting to a new page."""
     
-    # Initialize session state for chat visibility if not already set
+    # Initialize session state for chat visibility and history if not already set
     if 'show_chatbot_dialog' not in st.session_state:
         st.session_state.show_chatbot_dialog = False
     
-    # Create a simple button UI instead of trying to do fancy positioning
-    # which doesn't work well with Streamlit's React-based UI
-    col1, col2, col3 = st.columns([1, 6, 1])
-    with col3:
-        st.write("")
-        st.write("")
-        if not st.session_state.show_chatbot_dialog:
-            # Forest icon display is simplified
-            st.markdown("#### 🌳", unsafe_allow_html=True)
-            if st.button("Chat with Conservation Assistant", key="open_chat"):
-                st.session_state.show_chatbot_dialog = True
-                st.rerun()
+    if 'chat_history' not in st.session_state:
+        st.session_state.chat_history = [
+            {"role": "assistant", "content": "Hello! I'm ForestWatch's Conservation Assistant. I can answer questions about deforestation, conservation efforts, and how you can help protect our forests. What would you like to know today?"}
+        ]
+    
+    # Create a floating button with CSS
+    chat_button_styles = """
+    <style>
+    .floating-chat-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        font-size: 24px;
+        line-height: 60px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        z-index: 9999;
+        transition: all 0.3s ease;
+    }
+    .floating-chat-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+    .chat-pulse {
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+    }
+    </style>
+    """
+    st.markdown(chat_button_styles, unsafe_allow_html=True)
+    
+    # JavaScript for handling the chat button click
+    chat_button_js = """
+    <script>
+    // Create the floating chat button
+    const button = document.createElement('div');
+    button.className = 'floating-chat-button chat-pulse';
+    button.innerHTML = '🌳';
+    button.title = 'Chat with Conservation Assistant';
+    button.onclick = function() {
+        // Use Streamlit's components communication to trigger Python callback
+        const data = {
+            button_clicked: true
+        };
+        window.parent.postMessage({
+            type: "streamlit:setComponentValue",
+            value: data
+        }, "*");
+    };
+    document.body.appendChild(button);
+    </script>
+    """
+    
+    # Create a custom component to handle the button click
+    from streamlit.components.v1 import html
+    
+    def chat_button_callback():
+        html_code = chat_button_js
+        component_value = html(html_code, height=0)
+        return component_value
+    
+    # Only show the button if the dialog is not visible
+    if not st.session_state.show_chatbot_dialog:
+        button_clicked = chat_button_callback()
+        if button_clicked and button_clicked.get("button_clicked"):
+            st.session_state.show_chatbot_dialog = True
+            st.rerun()
     
     # Show chat dialog if state is true
     if st.session_state.show_chatbot_dialog:
-        # Create a card-like container for the chat
-        chat_container = st.container()
+        # Create a floating chat dialog container with CSS
+        st.markdown("""
+        <style>
+        .floating-chat-dialog {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 9998;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background-color: #2E7D32;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-close {
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .chat-input {
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        </style>
+        """, unsafe_allow_html=True)
         
-        with chat_container:
-            st.markdown("### ForestWatch Conservation Assistant")
-            st.markdown("---")
+        # Create a container for the chat dialog
+        chat_container = st.empty()
+        
+        # Display inline chat interface instead of iframe
+        with chat_container.container():
+            # Let's use an embedded version of the chatbot here
+            st.markdown("""
+            <div class="floating-chat-dialog">
+                <div class="chat-header">
+                    ForestWatch Conservation Assistant
+                    <span class="chat-close" onclick="closeChat()">×</span>
+                </div>
+                <div class="chat-body">
+                    <!-- Chat messages will go here -->
+                </div>
+                <div class="chat-input">
+                    <!-- Chat input will go here -->
+                </div>
+            </div>
             
-            # Embed the chatbot dialog iframe
-            components_html = f"""
-            <iframe src="/Conservation_Chatbot" 
-                    style="width: 100%; height: 400px; border: none; border-radius: 10px; 
-                           box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            </iframe>
-            """
-            st.markdown(components_html, unsafe_allow_html=True)
+            <script>
+            function closeChat() {
+                // Use Streamlit's components communication to trigger Python callback
+                const data = {
+                    close_clicked: true
+                };
+                window.parent.postMessage({
+                    type: "streamlit:setComponentValue",
+                    value: data
+                }, "*");
+            }
+            </script>
+            """, unsafe_allow_html=True)
             
-            # Close button
-            if st.button("Close Chat", key="close_chat"):
+            # We'll use Streamlit components for the actual chat functionality
+            # as the JavaScript-based approach can be complex
+            
+            # Chat history display - we'll manually style this
+            st.markdown("<h3>Conservation Assistant</h3>", unsafe_allow_html=True)
+            
+            # Display chat messages
+            for message in st.session_state.chat_history:
+                if message["role"] == "user":
+                    st.markdown(f"""
+                    <div style="
+                        display: flex;
+                        justify-content: flex-end;
+                        margin-bottom: 10px;
+                    ">
+                        <div style="
+                            background-color: #e3f2fd;
+                            border-radius: 15px 15px 0 15px;
+                            padding: 10px 15px;
+                            max-width: 80%;
+                            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                        ">
+                            <p style="margin: 0; color: #1565c0;">{message["content"]}</p>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+                    <div style="
+                        display: flex;
+                        justify-content: flex-start;
+                        margin-bottom: 10px;
+                    ">
+                        <div style="
+                            background-color: #e8f5e9;
+                            border-radius: 15px 15px 15px 0;
+                            padding: 10px 15px;
+                            max-width: 80%;
+                            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                        ">
+                            <p style="margin: 0; color: #2e7d32;">{message["content"]}</p>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+            
+            # If this is a new chat (first message only), show suggested questions
+            if len(st.session_state.chat_history) == 1:
+                st.markdown("""
+                <p style="color: #666; font-size: 0.9em; margin-top: 15px;">Suggested questions:</p>
+                """, unsafe_allow_html=True)
+                
+                suggested_questions = [
+                    "What are the main causes of deforestation?",
+                    "How does deforestation affect climate change?",
+                    "What can I do to help protect forests?",
+                    "Tell me about biodiversity in forests",
+                    "What conservation methods are most effective?"
+                ]
+                
+                for question in suggested_questions:
+                    if st.button(question, key=f"suggested_{question}"):
+                        # Add user message to chat history
+                        st.session_state.chat_history.append(
+                            {"role": "user", "content": question}
+                        )
+                        
+                        # Generate response
+                        response = generate_response(question)
+                        
+                        # Add assistant response to chat history
+                        st.session_state.chat_history.append(
+                            {"role": "assistant", "content": response}
+                        )
+                        
+                        # Rerun to display the updated chat
+                        st.rerun()
+            
+            # Input for user message with custom styling
+            with st.form("chat_form", clear_on_submit=True):
+                user_input = st.text_input(
+                    "Your message:",
+                    placeholder="Ask me about forest conservation...",
+                    label_visibility="collapsed"
+                )
+                
+                cols = st.columns([5, 1])
+                with cols[1]:
+                    submit_button = st.form_submit_button(
+                        "Send",
+                        use_container_width=True
+                    )
+            
+            # Process user input and generate response when the form is submitted
+            if submit_button and user_input:
+                # Add user message to chat history
+                st.session_state.chat_history.append(
+                    {"role": "user", "content": user_input}
+                )
+                
+                # Generate response
+                response = generate_response(user_input)
+                
+                # Add assistant response to chat history
+                st.session_state.chat_history.append(
+                    {"role": "assistant", "content": response}
+                )
+                
+                # Rerun to display the updated chat
+                st.rerun()
+            
+            # Close button functionality
+            close_container = st.empty()
+            if close_container.button("Close Chat", key="close_chat"):
                 st.session_state.show_chatbot_dialog = False
                 st.rerun()
 
