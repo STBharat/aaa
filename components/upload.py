@@ -219,6 +219,17 @@ def upload_section():
                             before_array = np.array(st.session_state.before_image)
                             after_array = np.array(st.session_state.after_image)
                             
+                            # Resize images to the same dimensions before comparison
+                            if before_array.shape != after_array.shape:
+                                # Get target dimensions from the before image
+                                target_width = before_array.shape[1]
+                                target_height = before_array.shape[0]
+                                
+                                # Convert after_array back to PIL Image for resizing
+                                after_img = PILImage.fromarray(after_array.astype('uint8'))
+                                after_img = after_img.resize((target_width, target_height), PILImage.LANCZOS)
+                                after_array = np.array(after_img)
+                            
                             # Create a difference image (absolute difference between before and after)
                             diff = np.abs(before_array.astype(np.float32) - after_array.astype(np.float32))
                             

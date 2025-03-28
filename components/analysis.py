@@ -138,6 +138,21 @@ def analysis_section():
                 before_array = np.array(st.session_state.before_image)
                 after_array = np.array(st.session_state.after_image)
                 
+                # Resize images to the same dimensions before comparison
+                # Use the dimensions of the first image as the target size
+                from PIL import Image
+                
+                # Get target dimensions
+                target_width = before_array.shape[1]
+                target_height = before_array.shape[0]
+                
+                # Resize the after image to match before image dimensions
+                if before_array.shape != after_array.shape:
+                    # Convert after_array back to PIL Image for resizing
+                    after_img = Image.fromarray(after_array.astype('uint8'))
+                    after_img = after_img.resize((target_width, target_height), Image.LANCZOS)
+                    after_array = np.array(after_img)
+                
                 # Calculate basic statistical differences between images
                 before_green_mean = np.mean(before_array[:,:,1])
                 after_green_mean = np.mean(after_array[:,:,1])
@@ -264,6 +279,21 @@ def analysis_section():
                 import numpy as np
                 before_array = np.array(st.session_state.before_image)
                 after_array = np.array(st.session_state.after_image)
+                
+                # Resize images to the same dimensions before comparison
+                # Use the dimensions of the first image as the target size
+                from PIL import Image
+                
+                # Get target dimensions
+                target_width = before_array.shape[1]
+                target_height = before_array.shape[0]
+                
+                # Resize the after image to match before image dimensions
+                if before_array.shape != after_array.shape:
+                    # Convert after_array back to PIL Image for resizing
+                    after_img = Image.fromarray(after_array.astype('uint8'))
+                    after_img = after_img.resize((target_width, target_height), Image.LANCZOS)
+                    after_array = np.array(after_img)
                 
                 # Calculate basic metrics for the changes
                 diff = np.abs(before_array.astype(np.float32) - after_array.astype(np.float32))
