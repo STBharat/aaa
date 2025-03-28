@@ -19,7 +19,7 @@ from components.timelapse import timelapse_section
 from components.statistics import statistics_section
 from components.time_series import time_series_analysis
 from components.download import download_section
-from components.action_fixed import action_section
+from components.action_fixed_new import action_section
 from components.realtime_mapping import realtime_mapping_section
 from components.global_map import global_forest_health_section
 from components.transitions import (
