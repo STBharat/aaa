@@ -22,6 +22,7 @@ from components.download import download_section
 from components.action_fixed_new import action_section
 from components.realtime_mapping import realtime_mapping_section
 from components.global_map import global_forest_health_section
+from components.chatbot import chatbot_section
 from components.transitions import (
     create_forest_loader, 
     apply_page_transition, 
@@ -454,7 +455,8 @@ reports_monitoring_options = [
 ]
 
 action_options = [
-    "Take Action"
+    "Take Action",
+    "Conservation Chatbot"
 ]
 
 # Dictionary to get the appropriate options based on the selected main section
@@ -476,7 +478,8 @@ all_options_with_icons = {
     "Time-Series Analysis": "📉 Time-Series Analysis",
     "Global Forest Health": "🌍 Global Forest Health",
     "Download Reports": "📁 Download Reports",
-    "Take Action": "🌱 Take Action"
+    "Take Action": "🌱 Take Action",
+    "Conservation Chatbot": "🤖 Conservation Chatbot"
 }
 
 # Get options for the selected main section
@@ -813,6 +816,11 @@ elif page == "Take Action":
     from components.header import create_header
     create_header(show_dashboard_elements=False)
     action_section()
+
+elif page == "Conservation Chatbot":
+    from components.header import create_header
+    create_header(show_dashboard_elements=False)
+    chatbot_section()
 
 # Footer
 st.markdown("---")
