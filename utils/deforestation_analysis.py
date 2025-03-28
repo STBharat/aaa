@@ -261,8 +261,11 @@ def analyze_weather_impact(location, time_difference_years):
     
     # Calculate metrics
     avg_temp = weather_data['temperature'].mean()
-    total_precipitation = weather_data['precipitation'].sum()
-    avg_monthly_precipitation = total_precipitation / (time_difference_years * 12)
+    
+    # Instead of summing all daily precipitation, calculate annual average
+    # This avoids unrealistically high values when time_difference_years is large
+    total_precipitation = weather_data.groupby(weather_data['date'].dt.year)['precipitation'].sum().mean()
+    avg_monthly_precipitation = total_precipitation / 12
     
     # Determine if there were drought conditions
     # This is a simplified approach
@@ -304,7 +307,7 @@ def analyze_weather_impact(location, time_difference_years):
     
     # Calculate anomalies
     temp_anomaly = avg_temp - reference_temp
-    precip_anomaly_pct = ((total_precipitation / time_difference_years) - reference_precip) / reference_precip * 100
+    precip_anomaly_pct = (total_precipitation - reference_precip) / reference_precip * 100
     
     # Determine impact factors
     impact_factors = []
