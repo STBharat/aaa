@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import numpy as np
+import time
 from datetime import datetime
 import plotly.express as px
 import plotly.graph_objects as go
@@ -21,6 +22,13 @@ from components.download import download_section
 from components.action_fixed import action_section
 from components.realtime_mapping import realtime_mapping_section
 from components.global_map import global_forest_health_section
+from components.transitions import (
+    create_forest_loader, 
+    apply_page_transition, 
+    end_page_transition, 
+    falling_leaves_animation,
+    page_loading_animation
+)
 
 # Set page configuration
 st.set_page_config(
@@ -509,6 +517,22 @@ elif selected_main_section == "Reports & Monitoring":
         page = "Download Reports"
 else:  # Take Action
     page = "Take Action"
+    
+# Add navigation animation when changing sections
+if 'last_navigation' not in st.session_state:
+    st.session_state.last_navigation = None
+    
+if st.session_state.last_navigation != (selected_main_section, subsection):
+    # Create a smoother transition effect when navigation changes
+    sidebar_animation = """
+    <style>
+    [data-testid="stSidebar"] {
+        animation: slideInFromLeft 0.5s ease-out;
+    }
+    </style>
+    """
+    st.sidebar.markdown(sidebar_animation, unsafe_allow_html=True)
+    st.session_state.last_navigation = (selected_main_section, subsection)
 
 st.sidebar.markdown("---")
 
@@ -585,6 +609,22 @@ if location != st.session_state.selected_location:
         # This would load predetermined data for the selected location
         st.session_state.analysis_complete = True
     st.rerun()
+
+# Add forest-themed loading animation and page transitions
+create_forest_loader()
+apply_page_transition()
+falling_leaves_animation()
+
+# Track page changes for transition effect
+if 'previous_page' not in st.session_state:
+    st.session_state.previous_page = None
+
+# If page has changed, add a small delay to allow for transition
+if st.session_state.previous_page != page:
+    loading_placeholder = page_loading_animation(f"Loading {page}...")
+    time.sleep(0.8)  # Brief delay for transition effect
+    loading_placeholder.empty()
+    st.session_state.previous_page = page
 
 # Main content based on selected page
 if page == "Overview Dashboard":
@@ -770,3 +810,6 @@ elif page == "Take Action":
 # Footer
 st.markdown("---")
 st.markdown("© 2025 Deforestation Analysis Dashboard | Built with Streamlit")
+
+# End page transition container
+end_page_transition()

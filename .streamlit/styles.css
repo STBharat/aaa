@@ -883,6 +883,62 @@ html, body, [class*="css"] {
     to {transform: rotate(360deg);}
 }
 
+/* Forest-themed transition animations */
+@keyframes forestFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes leafWiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(5deg);
+    }
+    75% {
+        transform: rotate(-5deg);
+    }
+}
+
+@keyframes treeGrow {
+    0% {
+        transform: scaleY(0);
+        transform-origin: bottom;
+    }
+    100% {
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+}
+
+@keyframes forestBreathe {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+@keyframes windSway {
+    0%, 100% {
+        transform: translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateX(3px) rotate(1deg);
+    }
+    75% {
+        transform: translateX(-3px) rotate(-1deg);
+    }
+}
+
 /* Status labels */
 .status-label {
     padding: 4px 8px;
@@ -950,4 +1006,166 @@ body.dark h4[style*="color: #2e7d32"] {
 
 body.dark p {
     color: #e0e0e0 !important;
+}
+
+/* Page transition animations and forest-themed loading */
+.page-transition {
+    animation: forestFadeIn 0.8s ease-out;
+}
+
+/* Forest-themed loading screen */
+.forest-loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.forest-loader-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.forest-scene {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.forest-ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: #33691e;
+    border-radius: 50% 50% 0 0;
+}
+
+.tree {
+    position: absolute;
+    bottom: 40px;
+}
+
+.tree-trunk {
+    width: 15px;
+    height: 40px;
+    background: #795548;
+    margin: 0 auto;
+    animation: treeGrow 1.5s ease-out;
+}
+
+.tree-top {
+    width: 50px;
+    height: 70px;
+    background: #2e7d32;
+    border-radius: 50% 50% 20% 20%;
+    margin: -20px auto 0;
+    animation: forestBreathe 3s infinite ease-in-out;
+}
+
+.tree:nth-child(1) {
+    left: 30px;
+    transform: scale(0.7);
+}
+
+.tree:nth-child(2) {
+    left: 85px;
+    transform: scale(1);
+}
+
+.tree:nth-child(3) {
+    right: 30px;
+    transform: scale(0.8);
+}
+
+.leaf {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: #4caf50;
+    border-radius: 50%;
+}
+
+.leaf:nth-child(1) {
+    top: 10px;
+    left: -5px;
+    animation: leafWiggle 3s infinite ease-in-out;
+}
+
+.leaf:nth-child(2) {
+    top: 5px;
+    right: -5px;
+    animation: leafWiggle 3s infinite ease-in-out 0.5s;
+}
+
+.leaf:nth-child(3) {
+    top: -10px;
+    left: 20px;
+    animation: leafWiggle 3s infinite ease-in-out 1s;
+}
+
+.cloud {
+    position: absolute;
+    width: 60px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    top: 40px;
+    animation: windSway 15s infinite ease-in-out;
+}
+
+.cloud:before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    top: -10px;
+    left: 10px;
+}
+
+.cloud:after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    top: -8px;
+    right: 10px;
+}
+
+.cloud:nth-child(1) {
+    left: 20px;
+    transform: scale(0.8);
+}
+
+.cloud:nth-child(2) {
+    right: 20px;
+    top: 60px;
+    transform: scale(0.6);
+    animation-delay: 1s;
+}
+
+.loading-text {
+    position: absolute;
+    bottom: 20px;
+    font-size: 18px;
+    color: white;
+    font-weight: 500;
+    animation: pulse 1.5s infinite;
+}
+
+/* Container for all main content with animation */
+.animated-content {
+    animation: forestFadeIn 0.8s ease-out;
 }
