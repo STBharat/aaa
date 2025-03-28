@@ -25,22 +25,28 @@ def show_chatbot_button():
     /* Floating chat button styles */
     .fixed-chat-button {
         position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 65px;
-        height: 65px;
+        bottom: 40px;
+        right: 40px;
+        width: 70px;
+        height: 70px;
         border-radius: 50%;
         background-color: #4CAF50;
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 28px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        font-size: 32px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.4);
         cursor: pointer;
-        z-index: 99999;
-        animation: pulse 2s infinite;
+        z-index: 999999;
+        animation: float 6s ease-in-out infinite, pulse 2s infinite;
         transition: all 0.3s ease;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
     }
 
     .fixed-chat-button:hover {
