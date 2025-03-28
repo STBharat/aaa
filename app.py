@@ -367,24 +367,64 @@ else:
 
 # Create a basic header by default - we'll show the dashboard elements only on the dashboard page
 
-# Enhanced Sidebar with better organization
-# Navigation section with icon - using header for cleaner look
-st.sidebar.title("🧭 Navigation")
+# Create enhanced sidebar with modern design
+st.sidebar.markdown("""
+<div class="sidebar-logo">
+    <div style="text-align: center;">
+        <h1 style="margin: 0; color: #1b5e20; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <span style="font-size: 2rem;">🌳</span> 
+            <span style="font-size: 1.5rem; font-weight: 600;">ForestWatch</span>
+        </h1>
+        <p style="margin: 5px 0 0 0; font-size: 0.9rem; opacity: 0.8;">Advanced Deforestation Analysis</p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-# Main sections with Dashboard as a separate option
-main_sections = [
-    "Dashboard",
-    "Upload & Analysis",
-    "Reports & Monitoring",
-    "Take Action"
-]
+st.sidebar.markdown("<h2>🧭 NAVIGATION</h2>", unsafe_allow_html=True)
 
-# Select the main section first
-selected_main_section = st.sidebar.selectbox(
+# Enhanced description with icons
+st.sidebar.markdown("""
+<div style="background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(76, 175, 80, 0.05)); 
+            padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #2e7d32;">
+    <p style="margin: 0 0 10px 0; font-weight: 500;">Advanced capabilities:</p>
+    <ul style="list-style-type: none; padding-left: 0; margin: 0;">
+        <li style="display: flex; align-items: center; margin-bottom: 8px;">
+            <span style="color: #2e7d32; font-size: 1.2rem; margin-right: 8px;">📊</span>
+            <span>AI-powered image analysis</span>
+        </li>
+        <li style="display: flex; align-items: center; margin-bottom: 8px;">
+            <span style="color: #2e7d32; font-size: 1.2rem; margin-right: 8px;">🌍</span>
+            <span>Global forest monitoring</span>
+        </li>
+        <li style="display: flex; align-items: center; margin-bottom: 8px;">
+            <span style="color: #2e7d32; font-size: 1.2rem; margin-right: 8px;">📈</span>
+            <span>Time-series trend analysis</span>
+        </li>
+    </ul>
+</div>
+""", unsafe_allow_html=True)
+
+# Main sections with Dashboard as a separate option with icons
+main_sections_with_icons = {
+    "Dashboard": "🏠",
+    "Upload & Analysis": "🔍",
+    "Reports & Monitoring": "📑",
+    "Take Action": "🌱"
+}
+
+# Format options with icons for better visual appearance
+formatted_options = [f"{icon} {section}" for section, icon in main_sections_with_icons.items()]
+section_mapping = {f"{icon} {section}": section for section, icon in main_sections_with_icons.items()}
+
+# Select the main section with radio buttons for better UX
+selected_formatted = st.sidebar.radio(
     "Main Sections",
-    main_sections,
+    formatted_options,
     index=0
 )
+
+# Map back to the original section name
+selected_main_section = section_mapping[selected_formatted]
 
 # Define subsections for each main section
 dashboard_options = [
