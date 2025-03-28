@@ -1,6 +1,7 @@
 import streamlit as st
 import io
-from PIL import Image
+import PIL  # Import the full PIL module
+from PIL import Image  # Also keep the direct Image import for clarity
 import numpy as np
 import datetime
 from utils.image_processing import process_satellite_image
@@ -323,7 +324,8 @@ def upload_section():
                 # "Before" image - more green to represent more forest
                 before_array = np.copy(base_image_array)
                 before_array[:, :, 1] = np.clip(before_array[:, :, 1] + 100, 0, 255)  # Enhance green
-                before_image = Image.fromarray(before_array)
+                # Use fully qualified PIL.Image to avoid variable scope issues
+                before_image = PIL.Image.fromarray(before_array)
                 
                 # "After" image - less green to represent deforestation
                 after_array = np.copy(base_image_array)
@@ -332,7 +334,7 @@ def upload_section():
                 mask = np.random.rand(height, width) > 0.8
                 after_array[mask, 0] = np.clip(after_array[mask, 0] + 70, 0, 255)  # More red
                 after_array[mask, 1] = np.clip(after_array[mask, 1] - 50, 0, 255)  # Less green
-                after_image = Image.fromarray(after_array)
+                after_image = PIL.Image.fromarray(after_array)
                 
                 # Store the images in session state
                 st.session_state.before_image = before_image
@@ -358,7 +360,7 @@ def upload_section():
                     # Interpolate between before and after images to simulate progression
                     progress = i / (len(years) - 1)
                     year_array = (1 - progress) * before_array + progress * after_array
-                    year_image = Image.fromarray(year_array.astype(np.uint8))
+                    year_image = PIL.Image.fromarray(year_array.astype(np.uint8))
                     st.session_state.timelapse_images[year] = year_image
                 
                 # Display success message
