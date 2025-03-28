@@ -642,9 +642,49 @@ if page == "Overview Dashboard":
     from components.header import create_header
     create_header(show_dashboard_elements=True)
     
-    # Add the floating chatbot button to the dashboard
-    from components.chatbot import show_chatbot_button
-    show_chatbot_button()
+    # Add a floating chat button with forest icon and animation
+    forest_chat_svg = """
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="white">
+        <path d="M12.6 2.86c.23-.01.45 0 .66.03a6.45 6.45 0 0 1 5.2 5.46c.13.82.1 1.65-.1 2.45l.04.03c1.1.15 2.2.64 3.1 1.5l-1.5 1.5c-1-1-2.3-1.5-3.5-1.5s-2.5.5-3.5 1.5l-1.42-1.44c.34-.39.5-.82.5-1.36 0-.56-.16-1.11-.5-1.6-.33-.47-.8-.86-1.4-1.1l-.2-.07c-.14-.04-.29-.04-.44-.04-.3 0-.56.1-.8.31-.24.2-.38.47-.4.77-.04.5.22.93.64 1.22l-.14.14c-1.1.84-2 1.9-2.7 3.12V7.5c0-.83.67-1.5 1.5-1.5h2.02c-.2-.42-.32-.88-.32-1.36 0-.83.35-1.62.9-2.18.56-.54 1.32-.9 2.16-.9Z"/>
+        <path d="m7.88 15.93 2.12 2.12c-1 1-2.3 1.5-3.5 1.5s-2.5-.5-3.5-1.5L4.5 16.5a3.5 3.5 0 0 1 3.38-.57ZM13 15.5c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v8H13v-8Z"/>
+        <path d="M9 18.5c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v5H9v-5Z M3 23.5v-2c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v2H3Z"/>
+    </svg>
+    """
+    
+    st.markdown(f"""
+    <style>
+    .floating-chat-btn {{
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        animation: pulse 2s infinite;
+    }}
+    .chat-btn {{
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        background-color: #2E7D32;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        font-weight: bold;
+        border: 2px solid rgba(255,255,255,0.3);
+    }}
+    @keyframes pulse {{
+        0% {{ transform: scale(1); }}
+        50% {{ transform: scale(1.05); }}
+        100% {{ transform: scale(1); }}
+    }}
+    </style>
+    
+    <div class="floating-chat-btn">
+        <a href="/Conservation_Chatbot" target="_self" class="chat-btn">
+            {forest_chat_svg} <span style="margin-left: 8px;">Chat with Assistant</span>
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Show brief stats in cards at the top
     col1, col2, col3 = st.columns(3)
@@ -826,8 +866,19 @@ elif page == "Conservation Chatbot":
     create_header(show_dashboard_elements=False)
     chatbot_section()
 
-# Special route for chatbot dialog - no navigation or header
+# Special route for chatbot dialog in a compact view with back button
 elif page == "Conservation_Chatbot":
+    # Add back button to return to dashboard
+    col1, col2 = st.columns([1, 7])
+    with col1:
+        if st.button("← Back"):
+            st.switch_page("app.py")
+    with col2:
+        st.markdown("### Conservation Chatbot")
+    
+    st.markdown("---")
+    
+    # Show the chat section in dialog mode
     chatbot_section(as_dialog=True)
 
 # Footer
