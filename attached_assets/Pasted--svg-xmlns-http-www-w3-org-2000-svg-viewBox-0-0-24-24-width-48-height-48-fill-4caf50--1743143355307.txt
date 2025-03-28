@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="#4caf50">
+    <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,10.5A1.5,1.5 0 0,1 13.5,12A1.5,1.5 0 0,1 12,13.5A1.5,1.5 0 0,1 10.5,12A1.5,1.5 0 0,1 12,10.5M7.5,12A1.5,1.5 0 0,1 9,13.5A1.5,1.5 0 0,1 7.5,15A1.5,1.5 0 0,1 6,13.5A1.5,1.5 0 0,1 7.5,12M16.5,12A1.5,1.5 0 0,1 18,13.5A1.5,1.5 0 0,1 16.5,15A1.5,1.5 0 0,1 15,13.5A1.5,1.5 0 0,1 16.5,12Z" />
+</svg>
+
+    </div>
+    <div>
+        <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Reduce Your Impact</h3>
+        <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Simple daily actions to help forests</p>
+    </div>
+</div>
+<div style="margin-top: 15px; color: #2e7d32;">
+
+<ul style="padding-left: 20px; margin-top: 0;">
+    <li style="margin-bottom: 8px;">Choose recycled or FSC-certified paper products</li>
+    <li style="margin-bottom: 8px;">Reduce meat consumption, especially beef</li>
+    <li style="margin-bottom: 8px;">Use digital documents instead of printing</li>
+    <li style="margin-bottom: 8px;">Support sustainable palm oil products</li>
+    <li>Buy furniture from sustainable sources</li>
+</ul>
+
+</div>
+<div style="
+    margin-top: 20px;
+    background-color: rgba(46,125,50,0.08);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #2e7d32;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+">
+    <div style="background-color: #2e7d32; 
+              width: 12px; 
+              height: 12px; 
+              border-radius: 50%; 
+              margin-right: 10px;
+              box-shadow: 0 0 8px rgba(46,125,50,0.4);"></div>
+    <span>2.5 tons of CO₂ saved annually by simple individual actions</span>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="#2e7d32">
+    <path d="M21,10.5H20V8H17V10.5H16.5V7H14V10.5H13.5V5H11V10.5H10.5V8H7.5V10.5H7V7H4V10.5H3A1,1 0 0,0 2,11.5V13.5A1,1 0 0,0 3,14.5H21A1,1 0 0,0 22,13.5V11.5A1,1 0 0,0 21,10.5M4.5,18.5H19.5V20H4.5V18.5Z" />
+</svg>
+
+    </div>
+    <div>
+        <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Support Organizations</h3>
+        <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Conservation groups fighting deforestation</p>
+    </div>
+</div>
+<div style="margin-top: 15px; color: #2e7d32;">
+
+<ul style="padding-left: 20px; margin-top: 0;">
+    <li style="margin-bottom: 8px;"><a href="https://www.rainforest-alliance.org/" target="_blank" style="color: inherit;">Rainforest Alliance</a></li>
+    <li style="margin-bottom: 8px;"><a href="https://www.worldwildlife.org/" target="_blank" style="color: inherit;">World Wildlife Fund</a></li>
+    <li style="margin-bottom: 8px;"><a href="https://www.conservation.org/" target="_blank" style="color: inherit;">Conservation International</a></li>
+    <li style="margin-bottom: 8px;"><a href="https://www.nature.org/" target="_blank" style="color: inherit;">The Nature Conservancy</a></li>
+    <li><a href="https://www.amazonteam.org/" target="_blank" style="color: inherit;">Amazon Conservation Team</a></li>
+</ul>
+
+</div>
+<div style="
+    margin-top: 20px;
+    background-color: rgba(46,125,50,0.08);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #2e7d32;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+">
+    <div style="background-color: #2e7d32; 
+              width: 12px; 
+              height: 12px; 
+              border-radius: 50%; 
+              margin-right: 10px;
+              box-shadow: 0 0 8px rgba(46,125,50,0.4);"></div>
+    <span>Over 150M acres protected through conservation partnerships</span>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="#689f38">
+    <path d="M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z" />
+</svg>
+
+    </div>
+    <div>
+        <h3 style="margin: 0; color: #2e7d32; font-size: 20px; font-weight: 600;">Get Involved</h3>
+        <p style="margin: 5px 0 0 0; color: #2e7d32; opacity: 0.9; font-size: 15px;">Direct action opportunities</p>
+    </div>
+</div>
+<div style="margin-top: 15px; color: #2e7d32;">
+
+<ul style="padding-left: 20px; margin-top: 0;">
+    <li style="margin-bottom: 8px;">Participate in local tree planting events</li>
+    <li style="margin-bottom: 8px;">Volunteer with conservation organizations</li>
+    <li style="margin-bottom: 8px;">Support political actions for forest protection</li>
+    <li style="margin-bottom: 8px;">Start a community garden</li>
+    <li>Educate others about deforestation</li>
+</ul>
+
+</div>
+<div style="
+    margin-top: 20px;
+    background-color: rgba(46,125,50,0.08);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #2e7d32;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+">
+    <div style="background-color: #2e7d32; 
+              width: 12px; 
+              height: 12px; 
+              border-radius: 50%; 
+              margin-right: 10px;
+              box-shadow: 0 0 8px rgba(46,125,50,0.4);"></div>
+    <span>20B+ trees planted through global community initiatives</span>
+</div>

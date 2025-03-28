@@ -70,7 +70,7 @@ def create_impact_card(icon_svg, title, subtitle, content, impact_stat, theme, c
                "involve": "#0b3c13" if is_dark else "#dcedc8"}[card_color]
     text_color = "#ffffff" if is_dark else "#2e7d32"
     
-    # Using CSS classname styling
+    # Remove hover animations as they might cause issues
     card_html = f"""
     <div style="
         background-color: {bg_color}; 
@@ -78,7 +78,6 @@ def create_impact_card(icon_svg, title, subtitle, content, impact_stat, theme, c
         border-left: 5px solid {border_color};
         padding: 20px 25px; 
         box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-        transition: all 0.3s ease;
         height: 100%;
     ">
         <div style="display: flex; align-items: center; margin-bottom: 15px;">
