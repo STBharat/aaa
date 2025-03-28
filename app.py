@@ -636,14 +636,14 @@ except Exception as e:
     st.error(f"Error in transitions: {str(e)}")
     # If transitions fail, we'll continue with the regular app
 
+# Add the floating chatbot button with the enhanced inline dialog
+show_chatbot_button()
+
 # Main content based on selected page
 if page == "Overview Dashboard":
     # Show full dashboard header with statistics and cards
     from components.header import create_header
     create_header(show_dashboard_elements=True)
-    
-    # Add the floating chatbot button with the enhanced inline dialog
-    show_chatbot_button()
     
     # Show brief stats in cards at the top
     col1, col2, col3 = st.columns(3)
