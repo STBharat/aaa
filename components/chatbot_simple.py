@@ -50,6 +50,30 @@ def chatbot_section(as_dialog=False):
 
 def generate_response(user_input):
     """Generate a response based on user input with AI-like qualities."""
+    user_input_lower = user_input.lower()
+    
+    # Handle greetings
+    if any(word in user_input_lower for word in ['hello', 'hi', 'hey']):
+        return "Hello! I'm your Forest Conservation Assistant. How can I help you today?"
+        
+    # Handle deforestation questions
+    elif 'deforestation' in user_input_lower:
+        return "Deforestation is a major environmental issue. The main causes include agriculture expansion, logging, and urban development. What specific aspect would you like to know more about?"
+        
+    # Handle conservation questions
+    elif 'conservation' in user_input_lower:
+        return "Forest conservation involves protecting forests from destruction and degradation. This can be done through protected areas, sustainable management, and community involvement. Would you like to know specific ways to help?"
+        
+    # Handle climate related questions
+    elif any(word in user_input_lower for word in ['climate', 'warming', 'temperature']):
+        return "Forests play a crucial role in regulating climate. They absorb CO2, help maintain rainfall patterns, and provide natural cooling. Deforestation contributes significantly to climate change."
+        
+    # Handle action questions
+    elif any(word in user_input_lower for word in ['help', 'action', 'do', 'can i']):
+        return "There are many ways to help protect forests: support conservation organizations, use sustainable products, reduce paper consumption, and spread awareness about forest protection."
+        
+    # Default response
+    return "I can help you with information about deforestation, conservation efforts, climate impacts, and ways to protect forests. What would you like to know more about?"
 
     # Track conversation context
     if 'conversation_context' not in st.session_state:
