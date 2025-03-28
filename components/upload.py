@@ -1,9 +1,9 @@
 import streamlit as st
 import io
-import PIL  # Import the full PIL module
-from PIL import Image  # Also keep the direct Image import for clarity
 import numpy as np
 import datetime
+import PIL
+from PIL import Image as PILImage  # Rename to avoid scope conflicts
 from utils.image_processing import process_satellite_image
 from utils.mapping import create_map_with_deforestation
 
@@ -148,7 +148,7 @@ def upload_section():
             if uploaded_before is not None:
                 try:
                     # Read the uploaded image
-                    before_image = Image.open(uploaded_before)
+                    before_image = PILImage.open(uploaded_before)
                     st.session_state.before_image = before_image
                     
                     # Display preview
@@ -173,7 +173,7 @@ def upload_section():
             if uploaded_after is not None:
                 try:
                     # Read the uploaded image
-                    after_image = Image.open(uploaded_after)
+                    after_image = PILImage.open(uploaded_after)
                     st.session_state.after_image = after_image
                     
                     # Display preview
@@ -242,9 +242,8 @@ def upload_section():
                             diff_heatmap[:,:,0] = np.where(change_intensity >= 80, 
                                                           (change_intensity - 80) * 3, 0).astype(np.uint8)
                             
-                            # Convert back to PIL Image
-                            from PIL import Image
-                            diff_image = Image.fromarray(diff_heatmap)
+                            # Convert back to PIL Image - use PILImage directly
+                            diff_image = PILImage.fromarray(diff_heatmap)
                             
                             # Store the difference visualization
                             st.session_state.diff_visualization = diff_image
@@ -266,7 +265,7 @@ def upload_section():
                             overlay[significant_changes, 2] = np.clip(overlay[significant_changes, 2] * overlay_weight, 0, 255).astype(np.uint8)
                             
                             # Convert to PIL Image
-                            overlay_image = Image.fromarray(overlay)
+                            overlay_image = PILImage.fromarray(overlay)
                             st.session_state.change_overlay = overlay_image
                             
                             # Use the overlay image as the analyzed image
