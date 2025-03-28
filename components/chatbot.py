@@ -7,77 +7,45 @@ import io
 def show_chatbot_button():
     """Display a floating chatbot button at the bottom right of the dashboard."""
     
-    # Create a chat button
-    chat_icon = """
-    <div 
-        onclick="this.style.display='none'; document.getElementById('chatbot-container').style.display='block';"
-        style="
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #4caf50;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 100;
-            border: 2px solid white;
-            transition: all 0.3s ease;
-        "
-        onmouseover="this.style.transform='scale(1.1)'"
-        onmouseout="this.style.transform='scale(1)'"
-    >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="white">
-            <path d="M12.6 2.86c.23-.01.45 0 .66.03a6.45 6.45 0 0 1 5.2 5.46c.13.82.1 1.65-.1 2.45l.04.03c1.1.15 2.2.64 3.1 1.5l-1.5 1.5c-1-1-2.3-1.5-3.5-1.5s-2.5.5-3.5 1.5l-1.42-1.44c.34-.39.5-.82.5-1.36 0-.56-.16-1.11-.5-1.6-.33-.47-.8-.86-1.4-1.1l-.2-.07c-.14-.04-.29-.04-.44-.04-.3 0-.56.1-.8.31-.24.2-.38.47-.4.77-.04.5.22.93.64 1.22l-.14.14c-1.1.84-2 1.9-2.7 3.12V7.5c0-.83.67-1.5 1.5-1.5h2.02c-.2-.42-.32-.88-.32-1.36 0-.83.35-1.62.9-2.18.56-.54 1.32-.9 2.16-.9Z"/>
-            <path d="m7.88 15.93 2.12 2.12c-1 1-2.3 1.5-3.5 1.5s-2.5-.5-3.5-1.5L4.5 16.5a3.5 3.5 0 0 1 3.38-.57ZM13 15.5c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v8H13v-8Z"/>
-            <path d="M9 18.5c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v5H9v-5Z M3 23.5v-2c0-.83.67-1.5 1.5-1.5h2c.83 0 1.5.67 1.5 1.5v2H3Z"/>
-        </svg>
-    </div>
-    """
+    # Initialize session state for chat visibility if not already set
+    if 'show_chatbot_dialog' not in st.session_state:
+        st.session_state.show_chatbot_dialog = False
     
-    # Create a container for the chat interface (initially hidden)
-    chat_container = """
-    <div id="chatbot-container" style="
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 350px;
-        height: 450px;
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        z-index: 101;
-        display: none;
-        overflow: hidden;
-        border: 1px solid #e0e0e0;
-    ">
-        <div style="
-            padding: 15px;
-            background-color: #4caf50;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        ">
-            <span>ForestWatch Conservation Assistant</span>
-            <div onclick="document.getElementById('chatbot-container').style.display='none';" style="
-                cursor: pointer;
-                font-size: 20px;
-                font-weight: bold;
-            ">×</div>
-        </div>
-        <iframe src="/Conservation_Chatbot" style="width: 100%; height: calc(100% - 50px); border: none;"></iframe>
-    </div>
-    """
+    # Create a simple button UI instead of trying to do fancy positioning
+    # which doesn't work well with Streamlit's React-based UI
+    col1, col2, col3 = st.columns([1, 6, 1])
+    with col3:
+        st.write("")
+        st.write("")
+        if not st.session_state.show_chatbot_dialog:
+            # Forest icon display is simplified
+            st.markdown("#### 🌳", unsafe_allow_html=True)
+            if st.button("Chat with Conservation Assistant", key="open_chat"):
+                st.session_state.show_chatbot_dialog = True
+                st.rerun()
     
-    # Display the chat button and container
-    st.markdown(chat_icon + chat_container, unsafe_allow_html=True)
+    # Show chat dialog if state is true
+    if st.session_state.show_chatbot_dialog:
+        # Create a card-like container for the chat
+        chat_container = st.container()
+        
+        with chat_container:
+            st.markdown("### ForestWatch Conservation Assistant")
+            st.markdown("---")
+            
+            # Embed the chatbot dialog iframe
+            components_html = f"""
+            <iframe src="/Conservation_Chatbot" 
+                    style="width: 100%; height: 400px; border: none; border-radius: 10px; 
+                           box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            </iframe>
+            """
+            st.markdown(components_html, unsafe_allow_html=True)
+            
+            # Close button
+            if st.button("Close Chat", key="close_chat"):
+                st.session_state.show_chatbot_dialog = False
+                st.rerun()
 
 def chatbot_section(as_dialog=False):
     """
