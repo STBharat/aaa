@@ -25,8 +25,8 @@ def show_chatbot_button():
     /* Floating chat button styles */
     .fixed-chat-button {
         position: fixed;
-        bottom: 40px;
-        right: 40px;
+        bottom: 80px;
+        right: 80px;
         width: 70px;
         height: 70px;
         border-radius: 50%;

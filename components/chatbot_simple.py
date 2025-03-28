@@ -20,8 +20,8 @@ def show_chatbot_button():
     <style>
     .chat-button {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
+        bottom: 80px;
+        right: 80px;
         width: 60px;
         height: 60px;
         border-radius: 50%;
