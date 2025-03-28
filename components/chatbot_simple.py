@@ -4,16 +4,49 @@ import random
 
 def show_chatbot_button():
     """Display a floating chat button that opens the chatbot dialog."""
+    # Initialize chat visibility state
+    if 'show_chat' not in st.session_state:
+        st.session_state.show_chat = False
+        
+    # Create a button that triggers the chat
+    if st.button('💬', key='chat_button', 
+                 help="Open chat assistant",
+                 use_container_width=False):
+        st.session_state.show_chat = not st.session_state.show_chat
+        st.rerun()
+    
+    # Style the button to look like a floating button
     st.markdown("""
-    <div class="fixed-chat-button" 
-         style="position: fixed; bottom: 40px; right: 40px; width: 70px; height: 70px; 
-                border-radius: 50%; background-color: #4CAF50; color: white; 
-                display: flex; align-items: center; justify-content: center; 
-                font-size: 32px; box-shadow: 0 6px 16px rgba(0,0,0,0.4); 
-                cursor: pointer; z-index: 999999;">
-        💬
-    </div>
+    <style>
+    [data-testid="baseButton-secondary"] {
+        position: fixed !important;
+        bottom: 40px !important;
+        right: 40px !important;
+        width: 70px !important;
+        height: 70px !important;
+        border-radius: 50% !important;
+        background-color: #4CAF50 !important;
+        color: white !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 32px !important;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.4) !important;
+        cursor: pointer !important;
+        z-index: 999999 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+    [data-testid="baseButton-secondary"]:hover {
+        background-color: #45a049 !important;
+        transform: translateY(-2px) !important;
+    }
+    </style>
     """, unsafe_allow_html=True)
+    
+    # Show chat if state is true
+    if st.session_state.show_chat:
+        chatbot_section(as_dialog=True)
 
 def chatbot_section(as_dialog=False):
     """Display the conservation chatbot interface."""
