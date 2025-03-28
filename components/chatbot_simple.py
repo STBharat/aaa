@@ -4,45 +4,47 @@ import random
 
 def show_chatbot_button():
     """Display a floating chat button that opens the chatbot dialog."""
-    # Initialize chat visibility state
     if 'show_chat' not in st.session_state:
         st.session_state.show_chat = False
-        
-    # Create a button that triggers the chat
-    if st.button('💬', key='chat_button', 
-                 help="Open chat assistant",
-                 use_container_width=False):
-        st.session_state.show_chat = not st.session_state.show_chat
-        st.rerun()
-    
-    # Style the button to look like a floating button
+
     st.markdown("""
     <style>
-    [data-testid="baseButton-secondary"] {
-        position: fixed !important;
-        bottom: 40px !important;
-        right: 40px !important;
-        width: 70px !important;
-        height: 70px !important;
-        border-radius: 50% !important;
-        background-color: #4CAF50 !important;
-        color: white !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        font-size: 32px !important;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.4) !important;
-        cursor: pointer !important;
-        z-index: 999999 !important;
-        padding: 0 !important;
-        border: none !important;
+    .fixed-chat-button {
+        position: fixed;
+        bottom: 80px;
+        right: 80px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: #4CAF50;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        cursor: pointer;
+        z-index: 999999;
+        transition: all 0.3s ease;
     }
-    [data-testid="baseButton-secondary"]:hover {
-        background-color: #45a049 !important;
-        transform: translateY(-2px) !important;
+    .fixed-chat-button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
     </style>
     """, unsafe_allow_html=True)
+
+    # Add the floating button
+    st.markdown("""
+    <div class="fixed-chat-button" onclick="document.getElementById('chat-button-hidden').click()">
+        💬
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Hidden button that will be clicked by the floating button
+    if st.button("Chat", key="chat-button-hidden", help="Chat with Conservation Assistant"):
+        st.session_state.show_chat = not st.session_state.show_chat
+        st.rerun()
     
     # Show chat if state is true
     if st.session_state.show_chat:
