@@ -611,20 +611,27 @@ if location != st.session_state.selected_location:
     st.rerun()
 
 # Add forest-themed loading animation and page transitions
-create_forest_loader()
-apply_page_transition()
-falling_leaves_animation()
+try:
+    create_forest_loader()
+    apply_page_transition()
+    
+    # Track page changes for transition effect
+    if 'previous_page' not in st.session_state:
+        st.session_state.previous_page = None
 
-# Track page changes for transition effect
-if 'previous_page' not in st.session_state:
-    st.session_state.previous_page = None
-
-# If page has changed, add a small delay to allow for transition
-if st.session_state.previous_page != page:
-    loading_placeholder = page_loading_animation(f"Loading {page}...")
-    time.sleep(0.8)  # Brief delay for transition effect
-    loading_placeholder.empty()
-    st.session_state.previous_page = page
+    # If page has changed, add a small delay to allow for transition
+    if st.session_state.previous_page != page:
+        loading_placeholder = page_loading_animation(f"Loading {page}...")
+        # Brief delay for transition effect (reduced to avoid long waits)
+        time.sleep(0.3)  
+        loading_placeholder.empty()
+        st.session_state.previous_page = page
+        
+    # Add falling leaves animation (now with CSS-only implementation)
+    falling_leaves_animation()
+except Exception as e:
+    st.error(f"Error in transitions: {str(e)}")
+    # If transitions fail, we'll continue with the regular app
 
 # Main content based on selected page
 if page == "Overview Dashboard":
