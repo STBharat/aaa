@@ -22,7 +22,7 @@ from components.download import download_section
 from components.action_fixed_new import action_section
 from components.realtime_mapping import realtime_mapping_section
 from components.global_map import global_forest_health_section
-from components.chatbot import chatbot_section, show_chatbot_button
+from components.chatbot_simple import chatbot_section, show_chatbot_button
 from components.transitions import (
     create_forest_loader, 
     apply_page_transition, 

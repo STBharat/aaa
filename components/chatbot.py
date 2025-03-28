@@ -18,10 +18,12 @@ def show_chatbot_button():
             {"role": "assistant", "content": "Hello! I'm ForestWatch's Conservation Assistant. I can answer questions about deforestation, conservation efforts, and how you can help protect our forests. What would you like to know today?"}
         ]
     
-    # Create a floating button with CSS
-    chat_button_styles = """
+    # Add a fixed position button in the bottom right
+    # First add the CSS for a nice floating button
+    st.markdown("""
     <style>
-    .floating-chat-button {
+    /* Floating chat button styles */
+    .fixed-chat-button {
         position: fixed;
         bottom: 20px;
         right: 20px;
@@ -30,152 +32,152 @@ def show_chatbot_button():
         border-radius: 50%;
         background-color: #4CAF50;
         color: white;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 24px;
-        line-height: 60px;
-        cursor: pointer;
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        cursor: pointer;
         z-index: 9999;
-        transition: all 0.3s ease;
-    }
-    .floating-chat-button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-    }
-    .chat-pulse {
         animation: pulse 2s infinite;
     }
+    
     @keyframes pulse {
         0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
         70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
         100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
     }
+    
+    /* Chat dialog styles */
+    .chat-dialog {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 350px;
+        max-height: 500px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        z-index: 9998;
+        overflow: hidden;
+    }
+    
+    /* Overriding some Streamlit button styles for our chatbot */
+    div[data-testid="stVerticalBlock"] div.chat-button-override > button {
+        background-color: #4CAF50 !important;
+        color: white !important;
+        border-radius: 30px !important;
+        padding: 0.5rem 1rem !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+        border: none !important;
+    }
+    
+    div[data-testid="stVerticalBlock"] div.chat-button-override > button:hover {
+        background-color: #45a049 !important;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2) !important;
+    }
     </style>
-    """
-    st.markdown(chat_button_styles, unsafe_allow_html=True)
-    
-    # JavaScript for handling the chat button click
-    chat_button_js = """
-    <script>
-    // Create the floating chat button
-    const button = document.createElement('div');
-    button.className = 'floating-chat-button chat-pulse';
-    button.innerHTML = '🌳';
-    button.title = 'Chat with Conservation Assistant';
-    button.onclick = function() {
-        // Use Streamlit's components communication to trigger Python callback
-        const data = {
-            button_clicked: true
-        };
-        window.parent.postMessage({
-            type: "streamlit:setComponentValue",
-            value: data
-        }, "*");
-    };
-    document.body.appendChild(button);
-    </script>
-    """
-    
-    # Create a custom component to handle the button click
-    from streamlit.components.v1 import html
-    
-    def chat_button_callback():
-        html_code = chat_button_js
-        component_value = html(html_code, height=0)
-        return component_value
+    """, unsafe_allow_html=True)
     
     # Only show the button if the dialog is not visible
     if not st.session_state.show_chatbot_dialog:
-        button_clicked = chat_button_callback()
-        if button_clicked and button_clicked.get("button_clicked"):
+        # Create a button that looks like a floating button
+        st.markdown("""
+        <div class="fixed-chat-button" onclick="document.getElementById('chat-button-hidden').click()">
+            🌳
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Hidden button that will be clicked by our custom button
+        if st.button("Open Chat", key="chat-button-hidden", help="Chat with Conservation Assistant", 
+                     style={"display": "none"}):
             st.session_state.show_chatbot_dialog = True
             st.rerun()
     
     # Show chat dialog if state is true
     if st.session_state.show_chatbot_dialog:
-        # Create a floating chat dialog container with CSS
+        # Add specific styling for the chat dialog to make it look like a floating popup
         st.markdown("""
         <style>
-        .floating-chat-dialog {
+        /* Style for the chat dialog to make it look floating */
+        div[data-testid="stVerticalBlock"] div.chat-dialog-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 26px rgba(0,0,0,0.2);
+            border: 1px solid #e0e0e0;
+            margin: 0;
+            padding: 0;
+            max-width: 400px;
             position: fixed;
             bottom: 90px;
             right: 20px;
-            width: 350px;
-            height: 500px;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             z-index: 9998;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
+        
+        /* Chat header styling */
         .chat-header {
             background-color: #2E7D32;
             color: white;
-            padding: 10px 15px;
-            font-weight: bold;
+            padding: 12px 15px;
+            margin: 0;
+            border-radius: 15px 15px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .chat-close {
-            cursor: pointer;
-            font-size: 20px;
+        
+        /* Make close button more visible */
+        div[data-testid="stVerticalBlock"] div.chat-dialog-container .close-button button {
+            background-color: transparent !important;
+            color: white !important;
+            border: none !important;
+            font-size: 20px !important;
+            font-weight: bold !important;
+            padding: 0 !important;
+            width: 30px !important;
+            height: 30px !important;
         }
-        .chat-body {
-            flex: 1;
+        
+        /* Make the chat content scroll if it gets too long */
+        div[data-testid="stVerticalBlock"] div.chat-dialog-container .chat-body {
+            max-height: 300px;
             overflow-y: auto;
             padding: 15px;
-        }
-        .chat-input {
-            padding: 10px;
-            border-top: 1px solid #eee;
         }
         </style>
         """, unsafe_allow_html=True)
         
-        # Create a container for the chat dialog
-        chat_container = st.empty()
-        
-        # Display inline chat interface instead of iframe
-        with chat_container.container():
-            # Let's use an embedded version of the chatbot here
-            st.markdown("""
-            <div class="floating-chat-dialog">
-                <div class="chat-header">
-                    ForestWatch Conservation Assistant
-                    <span class="chat-close" onclick="closeChat()">×</span>
-                </div>
-                <div class="chat-body">
-                    <!-- Chat messages will go here -->
-                </div>
-                <div class="chat-input">
-                    <!-- Chat input will go here -->
-                </div>
-            </div>
+        # Wrap our chat dialog in a container with the special class
+        with st.container():
+            # This div will be styled with CSS to look like a floating dialog
+            st.markdown('<div class="chat-dialog-container">', unsafe_allow_html=True)
             
-            <script>
-            function closeChat() {
-                // Use Streamlit's components communication to trigger Python callback
-                const data = {
-                    close_clicked: true
-                };
-                window.parent.postMessage({
-                    type: "streamlit:setComponentValue",
-                    value: data
-                }, "*");
-            }
-            </script>
+            # Chat header with close button
+            st.markdown("""
+            <div class="chat-header">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 18px; margin-right: 8px;">🌳</span>
+                    <span style="font-weight: bold;">Conservation Assistant</span>
+                </div>
+                <div id="close-button-placeholder"></div>
+            </div>
             """, unsafe_allow_html=True)
             
-            # We'll use Streamlit components for the actual chat functionality
-            # as the JavaScript-based approach can be complex
+            # Close button - needs to be a Streamlit button to work
+            col1, col2 = st.columns([6, 1])
+            with col2:
+                with st.container():
+                    st.markdown('<div class="close-button">', unsafe_allow_html=True)
+                    if st.button("✕", key="close_chat"):
+                        st.session_state.show_chatbot_dialog = False
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
             
-            # Chat history display - we'll manually style this
-            st.markdown("<h3>Conservation Assistant</h3>", unsafe_allow_html=True)
+            # Chat body will contain all messages
+            st.markdown('<div class="chat-body">', unsafe_allow_html=True)
             
-            # Display chat messages
+            # Display chat messages with custom styling
             for message in st.session_state.chat_history:
                 if message["role"] == "user":
                     st.markdown(f"""
@@ -277,12 +279,6 @@ def show_chatbot_button():
                 )
                 
                 # Rerun to display the updated chat
-                st.rerun()
-            
-            # Close button functionality
-            close_container = st.empty()
-            if close_container.button("Close Chat", key="close_chat"):
-                st.session_state.show_chatbot_dialog = False
                 st.rerun()
 
 def chatbot_section(as_dialog=False):
