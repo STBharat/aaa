@@ -3,6 +3,7 @@ from streamlit_extras.colored_header import colored_header
 from PIL import Image
 import base64
 import io
+import random
 
 def show_chatbot_button():
     """Display a floating chatbot button at the bottom right of the dashboard."""
@@ -271,7 +272,7 @@ def chatbot_section(as_dialog=False):
 
 def generate_response(user_input):
     """
-    Generate a response based on user input.
+    Generate a more AI-like response based on user input.
     
     Parameters:
     -----------
@@ -281,91 +282,160 @@ def generate_response(user_input):
     Returns:
     --------
     str
-        The chatbot's response
+        The chatbot's response with more natural language and conversational elements
     """
     # Convert input to lowercase for easier matching
     user_input_lower = user_input.lower()
     
+    # Track conversation context (would be improved with actual NLP)
+    if 'conversation_context' not in st.session_state:
+        st.session_state.conversation_context = {
+            'topics_discussed': [],
+            'questions_asked': 0,
+            'regions_mentioned': []
+        }
+    
+    # Update context
+    st.session_state.conversation_context['questions_asked'] += 1
+    
+    # Extract potential topics from user input
+    potential_topics = []
+    if any(word in user_input_lower for word in ["cause", "reason", "why", "driver"]):
+        potential_topics.append("causes")
+    if any(word in user_input_lower for word in ["climate", "carbon", "warming", "emission"]):
+        potential_topics.append("climate")
+    if any(word in user_input_lower for word in ["help", "action", "contribute", "do", "personal"]):
+        potential_topics.append("action")
+    
+    # Add new topics to context
+    for topic in potential_topics:
+        if topic not in st.session_state.conversation_context['topics_discussed']:
+            st.session_state.conversation_context['topics_discussed'].append(topic)
+    
+    # Track mentioned regions
+    regions = ["amazon", "borneo", "congo", "asia", "africa", "europe", "america"]
+    for region in regions:
+        if region in user_input_lower and region not in st.session_state.conversation_context['regions_mentioned']:
+            st.session_state.conversation_context['regions_mentioned'].append(region)
+    
+    # Personalization elements based on conversation history
+    personalization = ""
+    if st.session_state.conversation_context['questions_asked'] > 1:
+        personalization = "Thanks for your continued interest in forest conservation. "
+    if len(st.session_state.conversation_context['topics_discussed']) > 2:
+        personalization += "I can see you're curious about multiple aspects of forests! "
+    
+    # Add occasional references to previous topics for continuity
+    continuity = ""
+    if len(st.session_state.conversation_context['topics_discussed']) > 1 and random.random() < 0.3:
+        prev_topic = random.choice(st.session_state.conversation_context['topics_discussed'][:-1])
+        continuity = f"Earlier we talked about {prev_topic} of deforestation. "
+    
     # Check for different types of questions or keywords and provide appropriate responses
     
+    # Main response generation logic - enhanced for more natural language
+    
+    # Greeting or introduction
+    if any(keyword in user_input_lower for keyword in ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening"]):
+        return f"{personalization}Hello! I'm your ForestWatch Conservation Assistant. I'm here to help with questions about forests, deforestation, conservation efforts, and how we can protect our planet's valuable ecosystems. What would you like to know about today?"
+    
     # Deforestation causes
-    if any(keyword in user_input_lower for keyword in ["cause", "reason", "why deforestation", "what causes"]):
-        return """
-        The main causes of deforestation include:
-        
-        1. **Agricultural expansion** - Clearing forests for crops (like soy and palm oil) and cattle ranching
-        2. **Logging** - Both legal and illegal timber harvesting
-        3. **Infrastructure development** - Roads, dams, mines, and urban expansion
-        4. **Forest fires** - Both natural and human-caused
-        5. **Climate change** - Increasing drought and temperature stress
-        
-        The drivers vary by region. In the Amazon, cattle ranching and soy production are major factors. In Southeast Asia, palm oil and rubber plantations are significant contributors.
+    elif any(keyword in user_input_lower for keyword in ["cause", "reason", "why deforestation", "what causes"]):
+        st.session_state.conversation_context['topics_discussed'].append("causes")
+        return f"""{personalization}{continuity}The main drivers of deforestation around the world include:
+
+1. **Agricultural expansion** - This is the biggest factor globally, with forests being cleared for crops (especially soy and palm oil) and cattle ranching. In the Amazon, for example, about 80% of deforestation is linked to cattle ranching.
+
+2. **Commercial logging** - Both legal and illegal timber harvesting contribute significantly to forest loss, especially in Southeast Asia and parts of Africa.
+
+3. **Infrastructure development** - Roads, dams, mines, and urban expansion often cut through forests, fragmenting habitats and opening remote areas to further development.
+
+4. **Forest fires** - Both natural and human-caused fires affect millions of hectares annually, with climate change making fire seasons longer and more severe.
+
+5. **Climate change** - Increasing drought and temperature stress are damaging some forests, making them more vulnerable to disease and pests.
+
+The drivers vary significantly by region. Would you like me to elaborate on the deforestation patterns in a specific region like the Amazon, Congo Basin, or Southeast Asia?
         """
     
     # Climate impact
     elif any(keyword in user_input_lower for keyword in ["climate", "global warming", "carbon", "emission", "greenhouse"]):
-        return """
-        Forests and climate change are deeply connected:
-        
-        • Forests absorb about 2.6 billion tons of CO₂ annually - about 1/3 of fossil fuel emissions
-        • Deforestation accounts for about 10% of global greenhouse gas emissions
-        • When forests are cut or burned, stored carbon is released into the atmosphere
-        • Beyond carbon, forests regulate water cycles and help cool the planet through evapotranspiration
-        • They also provide resilience against climate extremes like floods and droughts
-        
-        Protecting and restoring forests is considered one of the most cost-effective climate solutions available.
+        st.session_state.conversation_context['topics_discussed'].append("climate")
+        return f"""{personalization}{continuity}Forests and climate change are deeply interconnected in ways that make forest conservation one of our most powerful climate solutions:
+
+• Forests function as enormous carbon sinks, absorbing about 2.6 billion tons of CO₂ annually - approximately one-third of fossil fuel emissions worldwide.
+
+• When forests are cut or burned, this carbon is released back into the atmosphere - currently, deforestation accounts for roughly 10% of global greenhouse gas emissions.
+
+• Beyond carbon storage, forests create their own microclimates and regulate water cycles through evapotranspiration, which helps cool the planet. The Amazon rainforest, for instance, generates about 50-75% of its own rainfall through this process!
+
+• Forests also provide natural resilience against climate extremes, reducing flooding, preventing soil erosion, and mitigating drought impacts.
+
+The IPCC and many climate scientists consider protecting existing forests and restoring degraded ones to be among the most cost-effective climate solutions available. Would you like to know more about how forest conservation fits into climate action plans, or perhaps how climate change is affecting forests?
         """
     
     # Personal action
     elif any(keyword in user_input_lower for keyword in ["help", "what can i do", "personal", "individual", "action", "contribute"]):
-        return """
-        Here are effective ways you can help protect forests:
-        
-        1. **Consumer choices**: 
-           - Choose FSC-certified wood and paper products
-           - Avoid products with palm oil or choose RSPO-certified sustainable palm oil
-           - Reduce beef consumption or choose sustainably raised beef
-        
-        2. **Support conservation**:
-           - Donate to reputable forest conservation organizations
-           - Support indigenous land rights (indigenous-managed forests have lower deforestation rates)
-           - Advocate for stronger forest protection policies
-        
-        3. **Direct action**:
-           - Participate in tree planting initiatives
-           - Support reforestation projects through verified carbon offset programs
-           - Get involved in community forest protection efforts
-        
-        Every action matters, and combining personal choices with support for systemic change has the most impact!
+        st.session_state.conversation_context['topics_discussed'].append("action")
+        return f"""{personalization}I'm really glad you're asking about personal actions! Here are effective ways you can help protect forests in your daily life:
+
+1. **Mindful consumption**: 
+   - Look for FSC-certified wood and paper products, which ensure sustainable forest management
+   - Check for RSPO certification on palm oil products or try to reduce palm oil consumption
+   - Consider reducing beef consumption or switching to more sustainably raised options, as cattle ranching is a leading cause of deforestation
+
+2. **Support forest conservation**:
+   - Even small donations to reputable organizations like Rainforest Alliance, WWF, or local conservation groups make a difference
+   - Support indigenous land rights - areas managed by indigenous communities typically have much lower deforestation rates
+   - Use your voice to advocate for stronger forest protection policies with elected officials
+
+3. **Direct participation**:
+   - Join or organize tree planting events in your community
+   - Consider supporting verified forest carbon offset programs for unavoidable emissions
+   - Educate others about forest conservation - awareness is a powerful catalyst for change!
+
+Remember, your individual choices create market demand that companies respond to. When combined with support for systemic change, your actions really do matter! Is there a specific type of action you'd like more details about?
         """
     
     # Conservation methods
     elif any(keyword in user_input_lower for keyword in ["conservation", "protect", "preserve", "save forest", "restoration"]):
-        return """
-        Effective forest conservation approaches include:
-        
-        1. **Protected areas** - National parks and reserves with legal protection
-        2. **Indigenous stewardship** - Supporting indigenous peoples' management of their forest lands
-        3. **Sustainable forestry** - FSC certification and reduced-impact logging
-        4. **Reforestation and restoration** - Tree planting and assisted natural regeneration
-        5. **REDD+ programs** - Reducing Emissions from Deforestation and Degradation
-        6. **Sustainable supply chains** - Certification for products like timber, palm oil, soy, and beef
-        7. **Land use planning** - Smart policies that direct development away from critical forests
-        
-        The most successful conservation combines multiple strategies and engages all stakeholders - from governments to local communities.
+        st.session_state.conversation_context['topics_discussed'].append("conservation")
+        return f"""{personalization}{continuity}There are several proven approaches to forest conservation that work in different contexts:
+
+1. **Protected areas** - Establishing legally protected forests as national parks, reserves, and wildlife sanctuaries. When well-managed, these are highly effective at preserving biodiversity. Currently about 18% of forests globally have protected status.
+
+2. **Indigenous stewardship** - Supporting indigenous peoples' rights to manage their traditional forest lands. Research consistently shows indigenous-managed forests have equal or lower deforestation rates than conventional protected areas.
+
+3. **Sustainable forestry** - Implementing reduced-impact logging techniques and pursuing FSC certification, which allows for some timber harvesting while maintaining forest ecosystem functions.
+
+4. **Forest restoration** - Reforesting degraded areas through active tree planting or assisted natural regeneration. The global Bonn Challenge aims to restore 350 million hectares by 2030.
+
+5. **REDD+ programs** - "Reducing Emissions from Deforestation and Degradation" programs provide financial incentives to developing countries for preserving their forests.
+
+6. **Supply chain reforms** - Certification systems and zero-deforestation commitments for commodities like timber, palm oil, soy, and beef.
+
+7. **Integrated land use planning** - Developing policies that direct development away from critical forest areas while meeting economic needs.
+
+The most successful conservation approaches combine multiple strategies and engage all stakeholders - from governments to local communities. Would you like to explore any of these approaches in more detail?
         """
     
     # Biodiversity
     elif any(keyword in user_input_lower for keyword in ["biodiversity", "wildlife", "species", "animals", "plants", "ecosystem"]):
-        return """
-        Forests are biodiversity powerhouses:
-        
-        • Tropical forests host 50-80% of the world's terrestrial biodiversity
-        • A single hectare of rainforest can contain over 750 tree species and thousands of animal species
-        • Many species are found nowhere else (endemic) and are highly vulnerable to forest loss
-        • Forests provide crucial habitat for 80% of amphibian species, 75% of bird species, and 68% of mammal species
-        
-        When forests disappear, we don't just lose trees - we lose intricate ecosystems developed over millions of years, with many species going extinct before they're even discovered. Forests also contain vast genetic resources, including potential medicines and other valuable compounds.
+        st.session_state.conversation_context['topics_discussed'].append("biodiversity")
+        return f"""{personalization}Forests are incredible biodiversity powerhouses - true treasure troves of life:
+
+• Tropical forests alone host 50-80% of the world's terrestrial biodiversity despite covering just about 10% of Earth's land surface.
+
+• The diversity is mind-boggling - a single hectare of rainforest can contain over 750 tree species and thousands of animal species. For perspective, all of North America has about 700 tree species total!
+
+• Many forest species are endemic, meaning they're found nowhere else on Earth. In Madagascar's forests, for example, over 90% of reptiles and amphibians exist nowhere else.
+
+• Forests provide crucial habitat for 80% of amphibian species, 75% of bird species, and 68% of mammal species globally.
+
+When forests disappear, we don't just lose trees - we lose intricate ecological networks that have evolved over millions of years. Many species go extinct before scientists even discover them. We're essentially losing a vast biological library we've barely begun to read.
+
+Forests also contain incredible genetic resources, including compounds for medicine. About 25% of modern pharmaceuticals were originally derived from forest plants. The potential for new discoveries remains enormous if we can protect these ecosystems.
+
+Is there a particular aspect of forest biodiversity that interests you most?
         """
     
     # Economic value
@@ -542,30 +612,81 @@ def generate_response(user_input):
         Effective forest governance requires addressing corruption, improving enforcement, securing indigenous rights, and integrating forest protection into economic development models.
         """
     
-    # Greeting
-    elif any(keyword in user_input_lower for keyword in ["hello", "hi", "hey", "greetings"]):
-        return "Hello! I'm here to provide information about forests, deforestation, and conservation. What would you like to know about today?"
+    # This greeting and about sections are now handled by the main response logic elsewhere
     
-    # About the chatbot
-    elif any(keyword in user_input_lower for keyword in ["who are you", "what are you", "about you", "your purpose", "chatbot"]):
-        return "I'm the ForestWatch Conservation Assistant, designed to provide information about deforestation, forest conservation, and how individuals can take action to protect our forests. I can answer questions about causes of deforestation, impacts on climate and biodiversity, effective conservation strategies, and ways you can help. How can I assist you today?"
-    
-    # Gratitude
-    elif any(keyword in user_input_lower for keyword in ["thanks", "thank you", "appreciate", "helpful"]):
-        return "You're welcome! I'm glad I could help. If you have any other questions about forests and conservation, feel free to ask. Every person who learns more about our forests can make a positive difference!"
-    
-    # Default response for unrecognized inputs
-    else:
-        return """
-        I'm not sure I understand your question fully. I can provide information about:
-        
-        • Causes and impacts of deforestation
-        • Climate change connections
-        • Biodiversity and ecosystem services
-        • Forest types and regions (Amazon, Borneo, Congo, etc.)
-        • Conservation strategies and solutions
-        • Ways individuals can help
-        • Forest statistics and trends
-        
-        Could you rephrase your question or specify which aspect of forest conservation you're interested in?
+    # When user says thank you or goodbye
+    elif any(keyword in user_input_lower for keyword in ["bye", "goodbye", "thank you", "thanks", "farewell"]):
+        return f"""You're very welcome! I'm glad I could help with information about forest conservation. Remember that every action to protect and restore forests makes a difference, no matter how small.
+
+Feel free to return anytime you have more questions about forests, deforestation, or conservation efforts. Together, we can work toward a future with healthy forests for generations to come!
+
+Have a wonderful day! 🌳
         """
+    
+    # For questions about the chatbot itself
+    elif any(keyword in user_input_lower for keyword in ["you", "chatbot", "assistant", "ai", "who are you", "what are you"]):
+        return f"""I'm the ForestWatch Conservation Assistant, designed to provide information about forests, deforestation patterns, conservation strategies, and ways to help protect these vital ecosystems.
+
+I can answer questions about different forest regions (like the Amazon, Congo Basin, or Southeast Asian forests), discuss how deforestation affects climate change and biodiversity, explain conservation approaches, and suggest ways you can contribute to forest protection.
+
+I'm here to make forest science and conservation information more accessible. While I'm not a human expert, I aim to provide accurate, up-to-date information to help people understand and appreciate the importance of forests.
+
+What would you like to know about forest conservation today?
+        """
+    
+    # General forest question
+    elif any(keyword in user_input_lower for keyword in ["forest", "tree", "woodland", "jungle"]):
+        st.session_state.conversation_context['topics_discussed'].append("general_forests")
+        return f"""{personalization}Forests are remarkable ecosystems that cover about 31% of Earth's land surface and are essential for all life on our planet. They:
+
+• Create habitat for approximately 80% of the world's terrestrial biodiversity, from tiny insects to large mammals
+
+• Act as massive carbon sinks, absorbing about 2.6 billion tons of CO₂ annually, helping mitigate climate change
+
+• Regulate water cycles - forests act like giant sponges, preventing flooding during heavy rainfall and releasing water during dry periods
+
+• Stabilize soil and prevent erosion, protecting watersheds that provide drinking water to billions of people
+
+• Support the livelihoods of about 1.6 billion people globally, including countless indigenous communities with deep cultural connections to forest lands
+
+• Provide countless resources we rely on daily, from timber and paper to medicines, foods, and fibers
+
+Despite their importance, we're losing about 4.7 million hectares of forest annually to deforestation - roughly equivalent to losing a football field of forest every second.
+
+Is there a particular aspect of forests you'd like to explore further?
+        """
+    
+    # Detect questions about the dashboard or app
+    elif any(keyword in user_input_lower for keyword in ["dashboard", "app", "application", "website", "platform", "tool", "software"]):
+        st.session_state.conversation_context['topics_discussed'].append("dashboard")
+        return f"""{personalization}The ForestWatch dashboard is designed to make complex deforestation data more accessible and actionable through several key features:
+
+• **Interactive mapping**: Visualize forest cover, deforestation hotspots, and conservation areas through layered maps you can explore by region.
+
+• **Before-and-after analysis**: Upload satellite images to see changes over time with automated detection of forest loss and detailed metrics.
+
+• **Time-series visualization**: Track forest cover changes over decades for any selected region to identify trends and patterns.
+
+• **Real-time alerts**: Monitor active deforestation through recent satellite detections, particularly useful for conservation organizations.
+
+• **Global forest health**: Explore interactive indicators of forest health across different regions and compare trends between countries.
+
+• **Educational resources**: Access information about conservation efforts and ways to get involved in forest protection.
+
+You can navigate between these features using the sidebar menu. Each section provides different insights into deforestation patterns and potential solutions.
+
+Is there a specific feature of the dashboard you're interested in exploring more deeply?
+        """
+    
+    # Default response for anything else - make it vary slightly for more natural feel
+    else:
+        # Make default responses vary slightly to feel more natural
+        responses = [
+            f"That's an interesting question about forests or conservation. I can provide information about deforestation causes, climate impacts, biodiversity, conservation methods, economic value of forests, and ways you can help protect these vital ecosystems. Could you clarify which aspect you'd like to learn more about?",
+            
+            f"I'd be happy to discuss that aspect of forest conservation. My knowledge covers deforestation drivers, climate connections, biodiversity impacts, conservation strategies, and actions individuals can take to help. To provide the most relevant information, could you specify which area interests you most?",
+            
+            f"Great question! I can share information about forest types, regional conservation challenges, deforestation statistics, restoration approaches, and the ecological importance of forests. To help focus my response, could you let me know which specific aspect of forests or conservation you're curious about?"
+        ]
+        
+        return random.choice(responses)
