@@ -649,8 +649,8 @@ if page == "Overview Dashboard":
             deforested_areas=st.session_state.deforested_areas if 'deforested_areas' in st.session_state else None
         )
         
-        from streamlit_folium import folium_static
-        folium_static(map_view)
+        from streamlit_folium import st_folium
+        st_folium(map_view, width=725)
         
     with dashboard_tabs[1]:
         st.subheader("Recent Deforestation Statistics")

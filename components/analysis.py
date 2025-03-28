@@ -1,6 +1,6 @@
 import streamlit as st
 import folium
-from streamlit_folium import folium_static
+from streamlit_folium import st_folium
 import numpy as np
 from datetime import datetime, timedelta
 import pandas as pd
@@ -666,7 +666,7 @@ def analysis_section():
             deforested_areas=st.session_state.deforested_areas
         )
         
-        folium_static(map_view)
+        st_folium(map_view, width=725, height=500, returned_objects=[])
         
         st.markdown("""
         **Map Legend:**

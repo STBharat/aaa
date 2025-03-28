@@ -1,6 +1,6 @@
 import streamlit as st
 import folium
-from streamlit_folium import folium_static
+from streamlit_folium import st_folium
 import datetime
 import pandas as pd
 import numpy as np
@@ -300,7 +300,7 @@ def realtime_mapping_section():
     # Create and display map
     st.subheader("Deforestation Alert Map")
     alert_map = create_alert_map(alerts_df, center_lat, center_lon)
-    folium_static(alert_map, width=1000, height=600)
+    st_folium(alert_map, width=1000, height=600, returned_objects=[])
     
     # Display alert table
     st.subheader("Recent Alerts")
